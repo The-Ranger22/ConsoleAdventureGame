@@ -1,19 +1,20 @@
 ﻿namespace ConsoleAdventureGame.model.items.weapon{
     public class MeleeWeapon : AbstractWeapon{
-        private int modifier;
+        
         public MeleeWeapon(){
             _damageType = weapon.DamageType.SLASHING;
             _damageRoll = new DamageRoll(1, 6);
-            modifier = 0;
+            bonusDmg = 0;
             name = "Simple sword";
             desc = "A sword of unremarkable make and design, forged from bronze.";
         }
 
-        public MeleeWeapon(DamageType damageType, DamageRoll damageRoll, string name, string desc){
+        public MeleeWeapon(DamageType damageType, DamageRoll damageRoll, string name, string desc, int modifier){
             _damageType = damageType;
             _damageRoll = damageRoll;
             this.name = name;
             this.desc = desc;
+            bonusDmg = modifier;
         }
 
         public MeleeWeapon(EnMeleeWeapons weaponType){
@@ -72,7 +73,7 @@
         }
 
         public override int calculateDamage(){
-            return _damageRoll.roll(modifier);
+            return _damageRoll.roll(bonusDmg);
         }
 
 

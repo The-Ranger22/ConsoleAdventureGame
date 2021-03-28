@@ -25,7 +25,7 @@ namespace ConsoleAdventureGame.model.items.weapon{
         }
 
         public int roll(int bonusDmg){
-            return diceCount * (gen.Next(diceCount) + 1) + bonusDmg;
+            return diceCount * (gen.Next(numOfSides) + 1) + bonusDmg;
         }
     }
 }
