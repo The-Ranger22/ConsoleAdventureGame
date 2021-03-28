@@ -10,14 +10,10 @@ namespace ConsoleAdventureGame.model.rooms{
         public LinkedList<AbstractCreature> Creatures{ get; }
 
         public Room(int id, int[] adjacencies){
-            this.Id = id;
-            this.Adjacencies = adjacencies;
-        }
-        
-        
-
-        public void randomizeContents(){
-                
+            Id = id;
+            Adjacencies = adjacencies;
+            Contents = new LinkedList<AbstractItem>();
+            Creatures = new LinkedList<AbstractCreature>();
         }
     }
 }
