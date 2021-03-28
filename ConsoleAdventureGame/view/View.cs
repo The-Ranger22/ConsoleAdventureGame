@@ -2,7 +2,7 @@
 using System.Reflection;
 
 namespace ConsoleAdventureGame.view{
-    public class CliView{
+    public class View{
         
         public void output(String message){
             Console.WriteLine(message);

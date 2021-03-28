@@ -58,8 +58,7 @@
         <Compile Include="model\rooms\Room.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="view\CliView.cs" />
-        <Compile Include="view\Display.cs" />
+        <Compile Include="view\View.cs" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="model\creatures\enemy" />
