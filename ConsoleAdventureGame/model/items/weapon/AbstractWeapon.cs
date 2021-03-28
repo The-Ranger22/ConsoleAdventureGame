@@ -13,7 +13,7 @@ namespace ConsoleAdventureGame.model.items.weapon
 
         protected AbstractWeapon() : base("Weapon", "A weapon"){
             _damageRoll = new DamageRoll();
-            _damageType = ConsoleAdventureGame.model.items.weapon.DamageType.SLASHING;
+            _damageType = weapon.DamageType.SLASHING;
         }
 
         protected AbstractWeapon(DamageRoll damageRoll, DamageType damageType) : base("Weapon", "A weapon"){

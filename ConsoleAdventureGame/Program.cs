@@ -1,4 +1,4 @@
-﻿using AdventureGame.control;
+﻿using ConsoleAdventureGame.control;
 
 namespace ConsoleAdventureGame{
     internal class Program{

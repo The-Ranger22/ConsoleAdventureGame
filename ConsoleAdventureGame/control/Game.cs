@@ -1,4 +1,4 @@
-﻿namespace AdventureGame.control
+﻿namespace ConsoleAdventureGame.control
 {
     /// <summary>
     /// Responsible for driving the game.
