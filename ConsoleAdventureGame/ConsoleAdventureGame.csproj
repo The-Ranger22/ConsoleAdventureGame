@@ -53,6 +53,7 @@
         <Compile Include="model\items\weapon\EnMeleeWeapons.cs" />
         <Compile Include="model\items\weapon\MeleeWeapon.cs" />
         <Compile Include="model\rooms\AbstractRoom.cs" />
+        <Compile Include="model\rooms\Directions.cs" />
         <Compile Include="model\rooms\RoomEdge.cs" />
         <Compile Include="model\rooms\TestRoom.cs" />
         <Compile Include="Program.cs" />

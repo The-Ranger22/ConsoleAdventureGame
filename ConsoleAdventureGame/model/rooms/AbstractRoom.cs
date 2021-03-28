@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using AdventureGame.model.creatures;
+using ConsoleAdventureGame.model.creatures;
 using ConsoleAdventureGame.model.items;
 
 namespace ConsoleAdventureGame.model.rooms
