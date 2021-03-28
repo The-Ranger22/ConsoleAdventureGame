@@ -54,10 +54,8 @@
         <Compile Include="model\items\weapon\DamageType.cs" />
         <Compile Include="model\items\weapon\EnMeleeWeapons.cs" />
         <Compile Include="model\items\weapon\MeleeWeapon.cs" />
-        <Compile Include="model\rooms\AbstractRoom.cs" />
-        <Compile Include="model\rooms\Directions.cs" />
-        <Compile Include="model\rooms\RoomEdge.cs" />
-        <Compile Include="model\rooms\TestRoom.cs" />
+        <Compile Include="model\rooms\Dungeon.cs" />
+        <Compile Include="model\rooms\Room.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="view\Display.cs" />
