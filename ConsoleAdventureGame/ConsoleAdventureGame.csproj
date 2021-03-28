@@ -40,7 +40,9 @@
     <ItemGroup>
         <Compile Include="control\Game.cs" />
         <Compile Include="model\creatures\AbstractCreature.cs" />
+        <Compile Include="model\creatures\AbstractNpc.cs" />
         <Compile Include="model\creatures\CreatureState.cs" />
+        <Compile Include="model\creatures\NpcBehavior.cs" />
         <Compile Include="model\creatures\Player.cs" />
         <Compile Include="model\items\AbstractItem.cs" />
         <Compile Include="model\items\armor\AbstractArmor.cs" />

@@ -1,27 +1,32 @@
 ﻿using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Runtime.InteropServices;
 using ConsoleAdventureGame.model.items;
 using ConsoleAdventureGame.model.rooms;
 
 namespace ConsoleAdventureGame.model.creatures
 {
-    public class Player : AbstractCreature
-    {
-        public Player(int health, List<AbstractItem> inventory, AbstractRoom location) {
-            //health = 100
-            //location 
-        }
-        protected override bool move(Directions direction) {
-            throw new System.NotImplementedException();
+    public class Player : AbstractCreature{
+        public Player(int health, List<AbstractItem> inventory) : base(health, inventory){ }
+
+
+        public bool pickUp(AbstractItem item){
+            if (inventory.Count < 10){
+                inventory.Add(item);
+                return true;
+            } else {
+                return false;
+            }
         }
 
-        protected override void fight(AbstractCreature opponent) {
-            throw new System.NotImplementedException();
+        public AbstractItem dropItem(int indexOfItem){
+            AbstractItem item = inventory[indexOfItem];
+            return item;
         }
-        
 
-        protected override void pickUp(AbstractItem item) {
-            throw new System.NotImplementedException();
-        }
-        
+
+
+
+
     }
 }
