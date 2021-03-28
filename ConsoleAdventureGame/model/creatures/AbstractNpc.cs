@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AdventureGame.model.items.armor;
+using ConsoleAdventureGame.model.items.armor;
 using ConsoleAdventureGame.model.items;
 using ConsoleAdventureGame.model.rooms;
 

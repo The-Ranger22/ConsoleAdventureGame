@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using AdventureGame.model.items.armor;
-using ConsoleAdventureGame.model.creatures;
 using ConsoleAdventureGame.model.items;
+using ConsoleAdventureGame.model.items.armor;
 using ConsoleAdventureGame.model.items.weapon;
 using ConsoleAdventureGame.model.rooms;
 
@@ -29,7 +27,7 @@ namespace ConsoleAdventureGame.model.creatures
             while (opponent.Health > 0 && Health > 0) {
                 for (int i = 0; i < Weapon.AttacksPerTurn; i++){
                     int attackRoll = gen.Next(20);
-                    if (attackRoll > opponent.armorHealth()){
+                    if (attackRoll > opponent.Armor.ArmorHealth){
                         opponent.TakeDamage(damage);
                     }
                 }
