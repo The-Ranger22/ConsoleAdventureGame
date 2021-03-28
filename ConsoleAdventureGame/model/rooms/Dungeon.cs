@@ -4,23 +4,23 @@ using ConsoleAdventureGame.model.items;
 
 namespace ConsoleAdventureGame.model.rooms{
     public class Dungeon{
-        private static int roomCount = 0;
-        private Room[] _rooms;
-        
+        public static int RoomCount{ get; private set; } = 0;
+        public Room[] Rooms{ get; private set; }
+
         Dungeon(){
             prefabA();
         }
 
         private void prefabA(){
-            _rooms = new Room[8];
-            _rooms[0] = new Room(roomCount++, new []{1});
-            _rooms[1] = new Room(roomCount++, new []{0, 2, 3});
-            _rooms[2] = new Room(roomCount++, new []{1});
-            _rooms[3] = new Room(roomCount++, new []{1, 4});
-            _rooms[4] = new Room(roomCount++, new []{3, 5});
-            _rooms[5] = new Room(roomCount++, new []{4, 6, 7});
-            _rooms[6] = new Room(roomCount++, new []{5});
-            _rooms[7] = new Room(roomCount++, new []{5});
+            Rooms = new Room[8];
+            Rooms[0] = new Room(RoomCount++, new []{1});
+            Rooms[1] = new Room(RoomCount++, new []{0, 2, 3});
+            Rooms[2] = new Room(RoomCount++, new []{1});
+            Rooms[3] = new Room(RoomCount++, new []{1, 4});
+            Rooms[4] = new Room(RoomCount++, new []{3, 5});
+            Rooms[5] = new Room(RoomCount++, new []{4, 6, 7});
+            Rooms[6] = new Room(RoomCount++, new []{5});
+            Rooms[7] = new Room(RoomCount++, new []{5});
         }
         
         
