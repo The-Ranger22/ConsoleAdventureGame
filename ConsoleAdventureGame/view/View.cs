@@ -3,7 +3,6 @@ using System.Reflection;
 
 namespace ConsoleAdventureGame.view{
     public class View{
-        
         public void Output(String message){
             Console.WriteLine(message);
         }

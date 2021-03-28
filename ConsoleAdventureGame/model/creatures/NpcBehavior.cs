@@ -1,9 +1,9 @@
 ﻿namespace ConsoleAdventureGame.model.creatures{
     public enum NpcBehavior{
-        AWARE, 
-        FOCUSED,
-        CARELESS,
-        FEARFUL,
-        BESERK
+        FEARFUL = -2,
+        WARY = -1,
+        NEUTRAL = 0,  
+        ANGRY = 1,
+        BESERK = 2
     }
 }

@@ -25,7 +25,7 @@ namespace ConsoleAdventureGame.model.rooms{
 
             Rooms[2].Contents.AddFirst(new MeleeWeapon(EnMeleeWeapons.DAGGER));
             Rooms[1].Contents.AddFirst(new MeleeWeapon(DamageType.BLUNT, new DamageRoll(3, 4), "The Mighty Mack",
-                "A four foot long mackerel ideal for bludgeon someone to death with.", 1));
+                "A four foot long mackerel ideal for bludgeoning someone to death with.", 1));
             Rooms[7].Contents.AddFirst(new MeleeWeapon(EnMeleeWeapons.GREATSWORD));
             
 
