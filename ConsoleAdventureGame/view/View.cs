@@ -4,11 +4,11 @@ using System.Reflection;
 namespace ConsoleAdventureGame.view{
     public class View{
         
-        public void output(String message){
+        public void Output(String message){
             Console.WriteLine(message);
         }
 
-        public int input(){
+        public int Input(){
             String input = Console.ReadLine();
             bool isInt = false;
             while (!isInt){
@@ -16,7 +16,7 @@ namespace ConsoleAdventureGame.view{
                     Int32.Parse(input);
                     isInt = true;
                 } catch {
-                    output("Please enter an integer per the previous prompt!");
+                    Output("Please enter an integer per the previous prompt!");
                     input = Console.ReadLine();
                 }
             }
