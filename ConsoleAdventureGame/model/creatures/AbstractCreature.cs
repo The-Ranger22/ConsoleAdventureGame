@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using AdventureGame.model.items.armor;
 using ConsoleAdventureGame.model.creatures;
 using ConsoleAdventureGame.model.items;
 using ConsoleAdventureGame.model.items.weapon;
@@ -7,25 +10,36 @@ using ConsoleAdventureGame.model.rooms;
 namespace ConsoleAdventureGame.model.creatures
 {
     public abstract class AbstractCreature {
-        protected int health{ get; set; }
-        protected AbstractWeapon weapon{ get; set; }
-        protected List<AbstractItem> inventory{ get; set; } = new List<AbstractItem>(10);
+        private int Health{ get; set; }
+        protected AbstractWeapon Weapon{ get; set; }
+        protected List<AbstractItem> Inventory{ get; set; } = new List<AbstractItem>(10);
         
-        public AbstractCreature(int health, List<AbstractItem> inventory){
-            this.health = health;
-            this.inventory = inventory;
-            this.weapon = new MeleeWeapon();
+        protected AbstractArmor Armor{ get; set;}
+        
+        public AbstractCreature(int health, List<AbstractItem> inventory, AbstractArmor armor){
+            Health = health;
+            Inventory = inventory;
+            Weapon = new MeleeWeapon();
+            Armor = armor;
         }
 
-        protected void fight(AbstractCreature opponent) {
-            while (opponent.health > 0) {
-                //for (int i = 0; i < weapon.)
+        protected void Fight(AbstractCreature opponent) {
+            Random gen = new Random();
+            int damage = Weapon.CalculateDamage();
+            while (opponent.Health > 0 && Health > 0) {
+                for (int i = 0; i < Weapon.AttacksPerTurn; i++){
+                    int attackRoll = gen.Next(20);
+                    if (attackRoll > opponent.armorHealth()){
+                        opponent.TakeDamage(damage);
+                    }
+                }
+                if (opponent.Health > 0){
+                    opponent.Fight(this);
+                }
             }
         }
-        
-
-        public void takeDamage(int damage) {
-            health -= damage;
+        private void TakeDamage(int damage) {
+            Health -= damage;
         }
 
 

@@ -23,7 +23,7 @@ namespace ConsoleAdventureGame.model.items
             this.desc = desc;
         }
 
-        public abstract void use();
+        public abstract void Use();
 
 
 

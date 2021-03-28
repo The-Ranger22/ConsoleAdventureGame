@@ -20,6 +20,7 @@
         public MeleeWeapon(EnMeleeWeapons weaponType){
             switch (weaponType){
                 case EnMeleeWeapons.AXE:{
+                    AttacksPerTurn = 1;
                     _damageType = weapon.DamageType.SLASHING;
                     _damageRoll = new DamageRoll(1, 6);
                     name = "Axe";
@@ -28,6 +29,7 @@
                     break;
                 }
                 case EnMeleeWeapons.SWORD:{
+                    AttacksPerTurn = 2;
                     _damageType = weapon.DamageType.SLASHING;
                     _damageRoll = new DamageRoll(1, 6);
                     name = "Sword";
@@ -36,6 +38,7 @@
                     break;
                 }
                 case EnMeleeWeapons.DAGGER:{
+                    AttacksPerTurn = 3;
                     _damageType = weapon.DamageType.PIERCING;
                     _damageRoll = new DamageRoll(1, 4);
                     name = "Dagger";
@@ -44,6 +47,7 @@
                     break;
                 }
                 case EnMeleeWeapons.SPEAR:{
+                    AttacksPerTurn = 1;
                     _damageType = weapon.DamageType.PIERCING;
                     _damageRoll = new DamageRoll(1, 6);
                     name = "Spear";
@@ -52,6 +56,7 @@
                     break;
                 }
                 case EnMeleeWeapons.MACE:{
+                    AttacksPerTurn = 1;
                     _damageType = weapon.DamageType.BLUNT;
                     _damageRoll = new DamageRoll(1, 6);
                     name = "Mace";
@@ -60,6 +65,7 @@
                     break;
                 }
                 case EnMeleeWeapons.GREATSWORD:{
+                    AttacksPerTurn = 1;
                     _damageType = weapon.DamageType.SLASHING;
                     _damageRoll = new DamageRoll(2, 6);
                     name = "Greatsword";
@@ -72,12 +78,12 @@
             bonusDmg = 0;
         }
 
-        public override int calculateDamage(){
+        public override int CalculateDamage(){
             return _damageRoll.roll(bonusDmg);
         }
 
 
-        public override void use(){
+        public override void Use(){
             throw new System.NotImplementedException();
         }
     }

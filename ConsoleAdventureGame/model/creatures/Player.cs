@@ -1,26 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Runtime.InteropServices;
+using AdventureGame.model.items.armor;
 using ConsoleAdventureGame.model.items;
-using ConsoleAdventureGame.model.rooms;
 
 namespace ConsoleAdventureGame.model.creatures
 {
     public class Player : AbstractCreature{
-        public Player(int health, List<AbstractItem> inventory) : base(health, inventory){ }
+        public Player(int health, List<AbstractItem> inventory, AbstractArmor armor) : base(health, inventory, armor){ }
 
 
-        public bool pickUp(AbstractItem item){
-            if (inventory.Count < 10){
-                inventory.Add(item);
+        public bool PickUp(AbstractItem item){
+            if (Inventory.Count < 10){
+                Inventory.Add(item);
                 return true;
             } else {
                 return false;
             }
         }
 
-        public AbstractItem dropItem(int indexOfItem){
-            AbstractItem item = inventory[indexOfItem];
+        public AbstractItem DropItem(int indexOfItem){
+            AbstractItem item = Inventory[indexOfItem];
             return item;
         }
 

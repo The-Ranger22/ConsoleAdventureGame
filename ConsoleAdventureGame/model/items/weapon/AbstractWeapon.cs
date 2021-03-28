@@ -1,5 +1,4 @@
 ﻿using System;
-using AdventureGame.model.items;
 
 namespace ConsoleAdventureGame.model.items.weapon
 {
@@ -10,6 +9,7 @@ namespace ConsoleAdventureGame.model.items.weapon
         protected DamageType _damageType { get; set; }
         protected DamageRoll _damageRoll { get; set; }
         protected int bonusDmg { get; set; }
+        public int AttacksPerTurn{ get; set; }
 
         protected AbstractWeapon() : base("Weapon", "A weapon"){
             _damageRoll = new DamageRoll();
@@ -34,10 +34,10 @@ namespace ConsoleAdventureGame.model.items.weapon
             return _damageRoll;
         }
 
-        public abstract int calculateDamage();
+        public abstract int CalculateDamage();
 
-        public int calculateDamage(int bonus){
-            return calculateDamage() + bonus;
+        public int CalculateDamage(int bonus){
+            return CalculateDamage() + bonus;
         }
     }
 }
