@@ -1,6 +1,4 @@
-﻿using AdventureGame.model.creatures;
-
-namespace AdventureGame.view
+﻿namespace ConsoleAdventureGame.view
 {
     public class Display
     {

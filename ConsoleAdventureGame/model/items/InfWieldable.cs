@@ -1,6 +1,6 @@
-﻿using AdventureGame.model.items.weapon;
+﻿using ConsoleAdventureGame.model.items.weapon;
 
-namespace AdventureGame.model.items
+namespace ConsoleAdventureGame.model.items
 {
     /**
      * Author: Levi Schanding

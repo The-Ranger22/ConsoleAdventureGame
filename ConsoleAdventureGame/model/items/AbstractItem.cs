@@ -1,7 +1,6 @@
 ﻿using System;
-using AdventureGame.model.creatures;
 
-namespace AdventureGame.model.items
+namespace ConsoleAdventureGame.model.items
 {
     public abstract class AbstractItem
     {
@@ -23,8 +22,10 @@ namespace AdventureGame.model.items
             this.name = name;
             this.desc = desc;
         }
-        
-        
+
+        public abstract void use();
+
+
 
     }
     

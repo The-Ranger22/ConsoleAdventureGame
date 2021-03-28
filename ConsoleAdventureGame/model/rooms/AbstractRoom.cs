@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using AdventureGame.model.creatures;
-using AdventureGame.model.items;
+using ConsoleAdventureGame.model.items;
 
-namespace AdventureGame.model.rooms
+namespace ConsoleAdventureGame.model.rooms
 {
     public abstract class AbstractRoom
     {

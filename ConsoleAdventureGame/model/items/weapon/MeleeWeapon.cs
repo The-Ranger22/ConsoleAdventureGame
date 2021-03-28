@@ -1,8 +1,10 @@
-﻿namespace AdventureGame.model.items.weapon{
-    public class MeleeWeapon : AbstractWeapon {
+﻿namespace ConsoleAdventureGame.model.items.weapon{
+    public class MeleeWeapon : AbstractWeapon{
+        private int modifier;
         public MeleeWeapon(){
             _damageType = weapon.DamageType.SLASHING;
             _damageRoll = new DamageRoll(1, 6);
+            modifier = 0;
             name = "Simple sword";
             desc = "A sword of unremarkable make and design, forged from bronze.";
         }
@@ -70,11 +72,12 @@
         }
 
         public override int calculateDamage(){
-            throw new System.NotImplementedException();
+            return _damageRoll.roll(modifier);
         }
 
 
-        
-
+        public override void use(){
+            throw new System.NotImplementedException();
+        }
     }
 }

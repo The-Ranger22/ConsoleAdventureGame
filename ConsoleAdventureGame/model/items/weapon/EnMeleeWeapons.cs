@@ -1,4 +1,4 @@
-﻿namespace AdventureGame.model.items.weapon{
+﻿namespace ConsoleAdventureGame.model.items.weapon{
     public enum EnMeleeWeapons{
         SWORD,
         AXE,

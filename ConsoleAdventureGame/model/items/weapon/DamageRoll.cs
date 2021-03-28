@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace AdventureGame.model.items.weapon{
+namespace ConsoleAdventureGame.model.items.weapon{
     public class DamageRoll{
         private Random gen;
         private int diceCount;

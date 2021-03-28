@@ -1,4 +1,4 @@
-﻿namespace AdventureGame.model.creatures
+﻿namespace ConsoleAdventureGame.model.creatures
 {
     public enum CreatureState
     {

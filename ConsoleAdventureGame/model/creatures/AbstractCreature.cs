@@ -1,4 +1,5 @@
-﻿using AdventureGame.model.rooms;
+﻿using ConsoleAdventureGame.model.creatures;
+using ConsoleAdventureGame.model.rooms;
 
 namespace AdventureGame.model.creatures
 {

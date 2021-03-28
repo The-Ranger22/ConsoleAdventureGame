@@ -1,4 +1,4 @@
-﻿namespace AdventureGame.model.items
+﻿namespace ConsoleAdventureGame.model.items
 {
     public interface InfConsumable
     {

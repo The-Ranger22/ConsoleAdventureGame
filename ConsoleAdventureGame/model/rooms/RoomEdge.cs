@@ -1,4 +1,4 @@
-﻿namespace AdventureGame.model.rooms{
+﻿namespace ConsoleAdventureGame.model.rooms{
     public class RoomEdge{
         
     }

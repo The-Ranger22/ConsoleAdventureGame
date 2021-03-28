@@ -1,7 +1,7 @@
 ﻿using System;
-using AdventureGame.model.creatures;
+using AdventureGame.model.items;
 
-namespace AdventureGame.model.items.weapon
+namespace ConsoleAdventureGame.model.items.weapon
 {
     /**
      * 
@@ -13,7 +13,7 @@ namespace AdventureGame.model.items.weapon
 
         protected AbstractWeapon() : base("Weapon", "A weapon"){
             _damageRoll = new DamageRoll();
-            _damageType = weapon.DamageType.SLASHING;
+            _damageType = ConsoleAdventureGame.model.items.weapon.DamageType.SLASHING;
         }
 
         protected AbstractWeapon(DamageRoll damageRoll, DamageType damageType) : base("Weapon", "A weapon"){
