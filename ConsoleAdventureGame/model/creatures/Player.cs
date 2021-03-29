@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 using ConsoleAdventureGame.model.items.armor;
 using ConsoleAdventureGame.model.items;
+using ConsoleAdventureGame.model.items.weapon;
 
 namespace ConsoleAdventureGame.model.creatures
 {
     public class Player : AbstractCreature{
-        public Player(int health, List<AbstractItem> inventory, AbstractArmor armor) : base(health, inventory, armor){ }
+        public Player(int health, List<AbstractItem> inventory, AbstractArmor armor, AbstractWeapon weapon) : base(
+            health, inventory, armor, weapon){
+            
+        }
 
 
         public bool PickUp(AbstractItem item){

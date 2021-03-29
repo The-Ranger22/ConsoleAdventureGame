@@ -1,18 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ConsoleAdventureGame.model.items.armor;
 using ConsoleAdventureGame.model.items;
+using ConsoleAdventureGame.model.items.weapon;
 using ConsoleAdventureGame.model.rooms;
 
 namespace ConsoleAdventureGame.model.creatures{
-    public abstract class AbstractNpc : AbstractCreature{
+    public class Monster : AbstractCreature{
         
         protected CreatureState State{ get; set; } = CreatureState.IDLE;
-        protected NpcBehavior Behavior{ get; set; }
+        public NpcBehavior Behavior{ get; set; }
         protected Room Location{ get; set; }
         
-        public AbstractNpc (int health, List<AbstractItem> inventory, Room location, AbstractArmor Armor): base(health, inventory, Armor){
+        public string Description{ get; set; }
+        
+        public Monster (int health, List<AbstractItem> inventory, Room location, AbstractArmor armor, AbstractWeapon weapon, string description): base(health, inventory, armor, weapon){
             Location = location;
             Behavior = NpcBehavior.WARY;
+            Description = description;
         }
 
 
