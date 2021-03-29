@@ -6,8 +6,8 @@ namespace ConsoleAdventureGame.model.items.armor
         public int ArmorHealth{ get; set; }
 
         public AbstractArmor(){
-            name = "Test Armor";
-            desc = "Armor made from the soft and supple flesh of younglings";
+            Name = "Test Armor";
+            Desc = "Armor made from the soft and supple flesh of younglings";
             ArmorHealth = 10;
         }
 

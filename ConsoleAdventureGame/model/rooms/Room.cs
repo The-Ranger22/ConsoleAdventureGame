@@ -7,8 +7,8 @@ namespace ConsoleAdventureGame.model.rooms{
         public int[] Adjacencies{ get; }
         public int Id{ get; }
         public string Description{ get; }
-        public LinkedList<AbstractItem> Contents{ get; }
-        public LinkedList<AbstractCreature> Creatures{ get; }
+        public List<AbstractItem> Contents{ get; }
+        public List<AbstractCreature> Creatures{ get; }
 
         public bool Visited{ get; }
 
@@ -17,8 +17,8 @@ namespace ConsoleAdventureGame.model.rooms{
             Id = id;
             Adjacencies = adjacencies;
             Description = "A cold, damp and frankly depressing room built out of uneven and poorly cut stone.";
-            Contents = new LinkedList<AbstractItem>();
-            Creatures = new LinkedList<AbstractCreature>();
+            Contents = new List<AbstractItem>();
+            Creatures = new List<AbstractCreature>();
             Visited = false;
         }
     }

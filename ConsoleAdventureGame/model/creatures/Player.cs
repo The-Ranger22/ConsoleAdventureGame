@@ -6,6 +6,9 @@ using ConsoleAdventureGame.model.items.weapon;
 namespace ConsoleAdventureGame.model.creatures
 {
     public class Player : AbstractCreature{
+        private const int INVENTORY_LIMIT = 5;
+
+
         public Player(int health, List<AbstractItem> inventory, AbstractArmor armor, AbstractWeapon weapon) : base(
             health, inventory, armor, weapon){
             
@@ -13,7 +16,7 @@ namespace ConsoleAdventureGame.model.creatures
 
 
         public bool PickUp(AbstractItem item){
-            if (Inventory.Count < 10){
+            if (Inventory.Count < INVENTORY_LIMIT){
                 Inventory.Add(item);
                 return true;
             } else {

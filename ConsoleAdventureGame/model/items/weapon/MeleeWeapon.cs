@@ -5,15 +5,15 @@
             _damageType = weapon.DamageType.SLASHING;
             _damageRoll = new DamageRoll(1, 6);
             bonusDmg = 0;
-            name = "Simple sword";
-            desc = "A sword of unremarkable make and design, forged from bronze.";
+            Name = "Simple sword";
+            Desc = "A sword of unremarkable make and design, forged from bronze.";
         }
 
         public MeleeWeapon(DamageType damageType, DamageRoll damageRoll, string name, string desc, int modifier){
             _damageType = damageType;
             _damageRoll = damageRoll;
-            this.name = name;
-            this.desc = desc;
+            this.Name = name;
+            this.Desc = desc;
             bonusDmg = modifier;
         }
 
@@ -23,8 +23,8 @@
                     AttacksPerTurn = 1;
                     _damageType = weapon.DamageType.SLASHING;
                     _damageRoll = new DamageRoll(1, 6);
-                    name = "Axe";
-                    desc =
+                    Name = "Axe";
+                    Desc =
                         "A short-handled axe wrought from dirty iron with a cutting smile the breadth of a man's spread hand. Suitable for splitting skulls.";
                     break;
                 }
@@ -32,8 +32,8 @@
                     AttacksPerTurn = 2;
                     _damageType = weapon.DamageType.SLASHING;
                     _damageRoll = new DamageRoll(1, 6);
-                    name = "Sword";
-                    desc =
+                    Name = "Sword";
+                    Desc =
                         "A sword forged of iron, twice the length of a man's forearm. Ideal for cutting threads.";
                     break;
                 }
@@ -41,8 +41,8 @@
                     AttacksPerTurn = 3;
                     _damageType = weapon.DamageType.PIERCING;
                     _damageRoll = new DamageRoll(1, 4);
-                    name = "Dagger";
-                    desc =
+                    Name = "Dagger";
+                    Desc =
                         "A dagger exuding trouble.";
                     break;
                 }
@@ -50,8 +50,8 @@
                     AttacksPerTurn = 1;
                     _damageType = weapon.DamageType.PIERCING;
                     _damageRoll = new DamageRoll(1, 6);
-                    name = "Spear";
-                    desc =
+                    Name = "Spear";
+                    Desc =
                         "A short spear two-thirds the length of a man, capped with a jagged, bronze spearhead.";
                     break;
                 }
@@ -59,8 +59,8 @@
                     AttacksPerTurn = 1;
                     _damageType = weapon.DamageType.BLUNT;
                     _damageRoll = new DamageRoll(1, 6);
-                    name = "Mace";
-                    desc =
+                    Name = "Mace";
+                    Desc =
                         "An ugly, forged lump of iron decorated with brutal spikes of iron affixed atop a simple shaft of oak.";
                     break;
                 }
@@ -68,8 +68,8 @@
                     AttacksPerTurn = 1;
                     _damageType = weapon.DamageType.SLASHING;
                     _damageRoll = new DamageRoll(2, 6);
-                    name = "Greatsword";
-                    desc =
+                    Name = "Greatsword";
+                    Desc =
                         "A finely wrought greatsword, forged from iron and tempered by blood split on untold battlefields.";
                     break;
                 }

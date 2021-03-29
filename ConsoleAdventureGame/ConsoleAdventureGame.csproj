@@ -39,6 +39,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="control\Game.cs" />
+        <Compile Include="control\EnMenus.cs" />
         <Compile Include="model\creatures\AbstractCreature.cs" />
         <Compile Include="model\creatures\Monster.cs" />
         <Compile Include="model\creatures\CreatureState.cs" />

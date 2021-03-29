@@ -9,10 +9,11 @@ namespace ConsoleAdventureGame.model.creatures
 {
     public abstract class AbstractCreature {
         private int Health{ get; set; }
-        protected AbstractWeapon Weapon{ get; set; }
-        protected List<AbstractItem> Inventory{ get; set; }
+        public string Name{ get; set; }
+        public AbstractWeapon Weapon{ get; set; }
+        public List<AbstractItem> Inventory{ get; set; }
         
-        protected AbstractArmor Armor{ get; set;}
+        public AbstractArmor Armor{ get; set;}
         
         public AbstractCreature(int health, List<AbstractItem> inventory, AbstractArmor armor, AbstractWeapon weapon){
             Health = health;

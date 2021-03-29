@@ -7,20 +7,20 @@ namespace ConsoleAdventureGame.model.items
         //TODO: Add container data field
         private static int itemCount = 0;
         public readonly int id;
-        protected String name { get; set; }
-        protected String desc { get; set; }
+        public string Name{ get; set; }
+        public string Desc{ get; set; }
 
 
         protected AbstractItem(){
             id = itemCount++;
-            name = "Item" + id;
-            desc = "nil";
+            Name = "Item" + id;
+            Desc = "nil";
         }
 
         protected AbstractItem(String name, String desc){
             id = itemCount++;
-            this.name = name;
-            this.desc = desc;
+            this.Name = name;
+            this.Desc = desc;
         }
 
         public abstract void Use();

@@ -23,10 +23,10 @@ namespace ConsoleAdventureGame.model.rooms{
             Rooms[6] = new Room(RoomCount++, new []{5});
             Rooms[7] = new Room(RoomCount++, new []{5});
 
-            Rooms[2].Contents.AddFirst(new MeleeWeapon(EnMeleeWeapons.DAGGER));
-            Rooms[1].Contents.AddFirst(new MeleeWeapon(DamageType.BLUNT, new DamageRoll(3, 4), "The Mighty Mack",
+            Rooms[2].Contents.Add(new MeleeWeapon(EnMeleeWeapons.DAGGER));
+            Rooms[1].Contents.Add(new MeleeWeapon(DamageType.BLUNT, new DamageRoll(3, 4), "The Mighty Mack",
                 "A four foot long mackerel ideal for bludgeoning someone to death with.", 1));
-            Rooms[7].Contents.AddFirst(new MeleeWeapon(EnMeleeWeapons.GREATSWORD));
+            Rooms[7].Contents.Add(new MeleeWeapon(EnMeleeWeapons.GREATSWORD));
             
 
         }
