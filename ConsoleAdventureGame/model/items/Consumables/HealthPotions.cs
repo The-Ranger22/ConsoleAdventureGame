@@ -1,11 +1,11 @@
 ﻿using ConsoleAdventureGame.model.creatures;
 
 namespace ConsoleAdventureGame.model.items.Consumables{
-    public class Potions : AbstractItem, InfConsumable {
+    public class HealthPotions : AbstractItem, InfConsumable {
         
         protected int PotionValue{ get; set; }
-        
-        public Potions(string name, string desc, int potionValue) : base(name, desc){
+
+        public HealthPotions(string name, string desc, int potionValue) : base(name, desc){
             PotionValue = potionValue;
         }
 

@@ -15,6 +15,8 @@ namespace ConsoleAdventureGame.model.creatures{
         public List<AbstractItem> Inventory{ get; set; }
 
         public AbstractArmor Armor{ get; set; }
+        
+        public bool StrengthBoost{ get; set; }
 
         public AbstractCreature(int health, List<AbstractItem> inventory, AbstractArmor armor, AbstractWeapon weapon){
             Health = health;
@@ -29,8 +31,9 @@ namespace ConsoleAdventureGame.model.creatures{
 
         protected void Fight(AbstractCreature opponent){
             Random gen = new Random();
+            int actualAttacksPerTurn = StrengthBoost ? Weapon.AttacksPerTurn + 1 : Weapon.AttacksPerTurn;
             if (Health > 0){ //if the player is still alive, attack
-                for (int i = 0; i < Weapon.AttacksPerTurn; i++){
+                for (int i = 0; i < actualAttacksPerTurn; i++){
                     if ((gen.Next(20) + 1) > opponent.Armor.CalculateArmorScore()){ //roll to hit
                         opponent.TakeDamage((Weapon != null) ? Weapon.CalculateDamage() : new DamageRoll(1, 4).roll()); //roll damage. 
                     }
@@ -39,6 +42,8 @@ namespace ConsoleAdventureGame.model.creatures{
                     opponent.Fight(this);
                 }
             }
+
+            StrengthBoost = false;
         }
 
         private void TakeDamage(int damage){
