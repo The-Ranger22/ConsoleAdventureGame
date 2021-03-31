@@ -6,7 +6,7 @@ using ConsoleAdventureGame.model.items.weapon;
 namespace ConsoleAdventureGame.model.creatures
 {
     public class Player : AbstractCreature{
-        private const int INVENTORY_LIMIT = 5;
+        private const int INVENTORY_LIMIT = 7;
 
 
         public Player(int health, List<AbstractItem> inventory, AbstractArmor armor, AbstractWeapon weapon) : base(
@@ -26,6 +26,7 @@ namespace ConsoleAdventureGame.model.creatures
 
         public AbstractItem DropItem(int indexOfItem){
             AbstractItem item = Inventory[indexOfItem];
+            Inventory.Remove(item);
             return item;
         }
 

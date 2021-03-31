@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using ConsoleAdventureGame.Factory;
 using ConsoleAdventureGame.model.creatures;
 using ConsoleAdventureGame.model.items;
+using ConsoleAdventureGame.model.items.armor;
 using ConsoleAdventureGame.model.items.weapon;
 
 namespace ConsoleAdventureGame.model.rooms{
@@ -27,6 +29,7 @@ namespace ConsoleAdventureGame.model.rooms{
             Rooms[1].Contents.Add(new MeleeWeapon(DamageType.BLUNT, new DamageRoll(3, 4), "The Mighty Mack",
                 "A four foot long mackerel ideal for bludgeoning someone to death with.", 1));
             Rooms[7].Contents.Add(new MeleeWeapon(EnMeleeWeapons.GREATSWORD));
+            Rooms[2].Creatures.Add(MonsterFactory.CreateGoblin(Rooms[2]));
             
 
         }

@@ -5,6 +5,7 @@
         DAGGER,
         SPEAR,
         MACE,
-        GREATSWORD
+        GREATSWORD,
+        CLUB
     }
 }

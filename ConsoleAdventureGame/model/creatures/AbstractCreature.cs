@@ -5,31 +5,31 @@ using ConsoleAdventureGame.model.items.armor;
 using ConsoleAdventureGame.model.items.weapon;
 using ConsoleAdventureGame.model.rooms;
 
-namespace ConsoleAdventureGame.model.creatures
-{
-    public abstract class AbstractCreature {
+namespace ConsoleAdventureGame.model.creatures{
+    public abstract class AbstractCreature{
         private int Health{ get; set; }
         public string Name{ get; set; }
         public AbstractWeapon Weapon{ get; set; }
         public List<AbstractItem> Inventory{ get; set; }
-        
-        public AbstractArmor Armor{ get; set;}
-        
+
+        public AbstractArmor Armor{ get; set; }
+
         public AbstractCreature(int health, List<AbstractItem> inventory, AbstractArmor armor, AbstractWeapon weapon){
             Health = health;
             Inventory = inventory;
             Weapon = weapon;
             Armor = armor;
+
+            Inventory.Add(Weapon);
+            Inventory.Add(Armor);
         }
 
-        protected void Fight(AbstractCreature opponent) {
+        protected void Fight(AbstractCreature opponent){
             Random gen = new Random();
-            int damage = Weapon.CalculateDamage();
-            while (opponent.Health > 0 && Health > 0) {
+            if (Health > 0){ //if the player is still alive, attack
                 for (int i = 0; i < Weapon.AttacksPerTurn; i++){
-                    int attackRoll = gen.Next(20);
-                    if (attackRoll > opponent.Armor.ArmorHealth){
-                        opponent.TakeDamage(damage);
+                    if ((gen.Next(20) + 1) > opponent.Armor.ArmorHealth){ //roll to hit
+                        opponent.TakeDamage((Weapon != null) ? Weapon.CalculateDamage() : new DamageRoll(1, 4).roll()); //roll damage. 
                     }
                 }
                 if (opponent.Health > 0){
@@ -37,11 +37,9 @@ namespace ConsoleAdventureGame.model.creatures
                 }
             }
         }
-        private void TakeDamage(int damage) {
+
+        private void TakeDamage(int damage){
             Health -= damage;
         }
-
-
     }
-
 }

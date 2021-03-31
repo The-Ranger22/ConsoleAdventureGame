@@ -23,34 +23,21 @@ namespace ConsoleAdventureGame.control{
         public void run(){
             //display opening message/title
             view.Output("AdventureGame v0.1");
-
-            //prompt player to inspect their inventory
-
-
-            //int i = 0x2500;
-
-
-
+            view.displayTitle();
             //main gameplay loop
             while (gameIsRunning){
-                string room_description = "";
                 //display the information about the room
                 //    - display room description
-                room_description += _currentRoom.Description;
-
                 //    - display creature(s) descriptions
-
-
                 //    - display descriptions of the contents of the room
-                view.Output(room_description);
-
-                
+                describeRoom();
                 //prompt user w/ menu options
                 menu();
             }
         }
-
-        public int menu(){
+        
+        
+        private bool menu(){
             bool actionTaken = false;
 
             while (!actionTaken){
@@ -74,39 +61,41 @@ namespace ConsoleAdventureGame.control{
                         actionTaken = inventoryMenu();
                         break;
                     }
-                    case 0:{
-                        break;
-                    } //quit
-                    default: break;
+                    case 0:{//quit
+                        return false;
+                    }
                 }
             }
 
-            return -1;
+            return true;
         }
 
         private bool inspectMenu(){
             if (_currentRoom.Contents.Count < 1){
                 view.Output("There is nothing to pick up.");
-            } else{
+            }
+            else{
                 bool isInspecting = true;
                 while (isInspecting){
                     int count = 0, input;
                     view.Output("What would you like to pick up?");
                     foreach (AbstractItem item in _currentRoom.Contents){
-                        view.Output(String.Format("|{0} : {1}|", ++count, item.Name));
+                        view.Output(String.Format("[{0}] : {1}", ++count, item.Name));
                     }
 
                     view.Output("Specify the number of the item you would like to pick up or enter 0 to return: ");
-                    input = view.Input() - 1;//adjust user input to compensate for index offset
+                    input = view.Input() - 1; //adjust user input to compensate for index offset
                     if (input == -1){
                         return false;
                     }
+
                     if (input >= 0 && input < count){
                         if (_player.PickUp(_currentRoom.Contents[input])){
                             view.Output($"You picked up {_currentRoom.Contents[input].Name}");
                             _currentRoom.Contents.RemoveAt(input);
                             return true;
                         }
+
                         view.Output("You've carrying to much! You'll need to part ways with something you hoarder.");
                         isInspecting = false;
                     }
@@ -116,17 +105,17 @@ namespace ConsoleAdventureGame.control{
                 }
             }
 
-            
+
             return false;
         }
 
         private bool moveMenu(){
-            
             while (true){
                 view.Output("Where would you like to go?");
                 for (int i = 0; i < _currentRoom.Adjacencies.Length; i++){
                     view.Output(String.Format("[{0}] : Room {1}", i + 1, _currentRoom.Adjacencies[i]));
                 }
+
                 view.Output("Specify the number of the room you would like to go to. Enter 0 to return.");
                 int input = view.Input() - 1;
                 if (input == -1){
@@ -141,33 +130,72 @@ namespace ConsoleAdventureGame.control{
                 else{
                     view.Output("Well, you're not getting there from here.");
                 }
+
                 Console.Clear();
             }
         }
 
         private bool inventoryMenu(){
-            
             while (true){
                 view.Output("Manage your inventory.");
                 string format = "[{0}] : {1}";
                 for (int i = 0; i < _player.Inventory.Count; i++){
                     view.Output(String.Format(format, i + 1, _player.Inventory[i].Name));
                 }
+                view.Output("[0] : Return");
                 view.Output("Specify the number of the item you would like to select.");
                 int input = view.Input() - 1;
                 if (input == -1){
                     return false;
                 }
+
                 if (input > -1 && input < _player.Inventory.Count){
                     AbstractItem item = _player.Inventory[input];
                     if (item is InfWieldable){
-                        Console.WriteLine("YEeET");
-                        //wield weapon
-                        //drop weapon
-                    } else if (item is InfEquippable){
+                        while (true){
+                            view.Output(String.Format("What would you like to do with {0}?", item.Name));
+                            //output the name of the weapon
+                            view.Output(item.Name);
+                            //output the description of the weapon
+                            view.Output(item.Desc);
+                            //list available actions that the user can perform on the weapon
+                            view.Output(String.Format(format, 1, "Wield"));
+                            view.Output(String.Format(format, 2, "Drop"));
+                            view.Output(String.Format(format, 0, "Return"));
+                            switch (view.Input()){
+                                case 0:{
+                                    //return to outer menu
+                                    return false;
+                                }
+                                case 1:{
+                                    //wield the weapon
+                                    _player.Weapon = (AbstractWeapon) item; //set the player's weapon to the new one
+                                    view.Output(String.Format("You are now wielding {0}.", item.Name));
+                                    return true;
+                                }
+                                case 2:{
+                                    //drop the weapon
+                                    _currentRoom.Contents.Add(_player.DropItem(_player.Inventory.IndexOf(item)));
+                                    //if the item dropped is the weapon the player is currently holding, set the player's current weapon to null
+                                    if (_player.Weapon == item){
+                                        _player.Weapon = null;
+                                    }
+                                    view.Output(String.Format("You drop {0}.", item.Name));
+                                    return true;
+                                }
+                                default:{
+                                    view.Output(String.Format("You want to do what with {0}?", item.Name));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else if (item is InfEquippable){
+                        view.Output("NOT YET IMPLEMENTED");
                         //equip armor
                         //drop armor
-                    } else if (item is InfConsumable){
+                    }
+                    else if (item is InfConsumable){
                         //use item
                         //drop item
                     }
@@ -179,6 +207,57 @@ namespace ConsoleAdventureGame.control{
                     view.Output("You're rather imaginative, aren't you?");
                 }
                 //Console.Clear();
+            }
+        }
+
+        private void describeRoom(){
+            view.Output("You enter the room.");
+            view.Output(_currentRoom.Description);
+            //display all the creatures inside the room if there are any
+            if (_currentRoom.Creatures.Count > 0){
+                if (_currentRoom.Creatures.Count == 1){
+                    view.Output("You see a ", false);
+                    view.Output($"{_currentRoom.Creatures[0].Name}", false, ConsoleColor.Red);
+                    view.Output(".");
+                }
+                else{
+                    view.Output("You see ", false);
+                    for (int i = 0; i < _currentRoom.Creatures.Count; i++){
+                        if (i == _currentRoom.Creatures.Count - 1){
+                            view.Output("and a ", false);
+                            view.Output($"{_currentRoom.Creatures[i].Name}", false, ConsoleColor.Red);
+                            view.Output(".");
+                        }
+                        else{
+                            view.Output("a ", false);
+                            view.Output($"{_currentRoom.Creatures[i].Name}", false, ConsoleColor.Red);
+                            view.Output(", ");
+                        }
+                    }
+                }
+            }
+            else{
+                view.Output("There is no one here.");
+            }
+            //display all the items on the floor
+            if (_currentRoom.Contents.Count > 0){
+                if (_currentRoom.Contents.Count == 1){
+                    view.Output($"You see a {_currentRoom.Contents[0].Name} lying on the floor.");
+                }
+                else{
+                    view.Output("On the floor, you see ", false);
+                    for (int i = 0; i < _currentRoom.Contents.Count; i++){
+                        if (i == _currentRoom.Contents.Count - 1){
+                            view.Output($"and a{_currentRoom.Contents[i].Name}.");
+                        }
+                        else{
+                            view.Output($"a {_currentRoom.Contents[i].Name}, ", false);
+                        }
+                    }
+                }
+            }
+            else{
+                view.Output("There is nothing here.");
             }
         }
     }

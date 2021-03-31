@@ -73,7 +73,14 @@
                         "A finely wrought greatsword, forged from iron and tempered by blood split on untold battlefields.";
                     break;
                 }
-                default: break;
+                case EnMeleeWeapons.CLUB:{
+                    AttacksPerTurn = 1;
+                    _damageType = weapon.DamageType.BLUNT;
+                    _damageRoll = new DamageRoll(1, 4);
+                    Name = "Club";
+                    Desc = "A crude club fashioned from wood.";
+                    break;
+                }
             }
             bonusDmg = 0;
         }

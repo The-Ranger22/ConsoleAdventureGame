@@ -39,7 +39,8 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="control\Game.cs" />
-        <Compile Include="control\EnMenus.cs" />
+        <Compile Include="Factory\ItemFactory.cs" />
+        <Compile Include="Factory\MonsterFactory.cs" />
         <Compile Include="model\creatures\AbstractCreature.cs" />
         <Compile Include="model\creatures\Monster.cs" />
         <Compile Include="model\creatures\CreatureState.cs" />
@@ -60,6 +61,7 @@
         <Compile Include="model\rooms\Room.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="view\ASCIISymbol.cs" />
         <Compile Include="view\View.cs" />
     </ItemGroup>
     <ItemGroup>

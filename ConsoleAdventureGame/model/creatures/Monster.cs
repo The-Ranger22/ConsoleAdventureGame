@@ -14,10 +14,11 @@ namespace ConsoleAdventureGame.model.creatures{
         
         public string Description{ get; set; }
         
-        public Monster (int health, List<AbstractItem> inventory, Room location, AbstractArmor armor, AbstractWeapon weapon, string description): base(health, inventory, armor, weapon){
+        public Monster (int health, List<AbstractItem> inventory, Room location, AbstractArmor armor, AbstractWeapon weapon, string name, string description): base(health, inventory, armor, weapon){
             Location = location;
             Behavior = NpcBehavior.WARY;
             Description = description;
+            Name = name;
         }
 
 
