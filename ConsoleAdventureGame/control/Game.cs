@@ -330,19 +330,17 @@ namespace ConsoleAdventureGame.control{
         }
 
         private void monstersTurn(){
+            Queue<Monster> turnOrder = new Queue<Monster>();
             foreach (Room room in _dungeon.Rooms){
-                try{ 
-                    foreach (AbstractCreature creature in room.Creatures){
-                        if (creature is Monster monster){
-                            monster.Act();
-                        }
+                foreach (AbstractCreature creature in room.Creatures){
+                    if (creature is Monster monster){
+                        turnOrder.Enqueue(monster);
                     }
                 }
-                catch (Exception e){
-                    Console.WriteLine(e);
-                    throw;
-                }
-                
+            }
+
+            while (turnOrder.Count > 0){
+                turnOrder.Dequeue().Act();
             }
         }
     }
