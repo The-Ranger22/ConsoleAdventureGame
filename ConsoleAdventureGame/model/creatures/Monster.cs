@@ -8,7 +8,7 @@ using ConsoleAdventureGame.model.rooms;
 namespace ConsoleAdventureGame.model.creatures{
     public class Monster : AbstractCreature{
         
-        protected CreatureState State{ get; set; } = CreatureState.IDLE;
+        public CreatureState State{ get; set; } = CreatureState.IDLE;
         public NpcBehavior Behavior{ get; set; }
         protected Room Location{ get; set; }
         
@@ -21,6 +21,15 @@ namespace ConsoleAdventureGame.model.creatures{
             Name = name;
         }
 
+        public Monster(int health, List<AbstractItem> inventory, Room location, AbstractArmor armor,
+            AbstractWeapon weapon, string name, string description, CreatureState state) : base(health, inventory,
+            armor, weapon){
+            Location = location;
+            Behavior = NpcBehavior.WARY;
+            State = state;
+            Description = description;
+            Name = name;
+        }
 
         public void IncreaseAggression(){
             switch (Behavior){
@@ -44,6 +53,23 @@ namespace ConsoleAdventureGame.model.creatures{
                     break;
                 }
                 default: break;
+            }
+        }
+
+        public void Act(){
+            switch (State){
+                case CreatureState.HUNTING:{
+                    Random gen = new Random();
+                    if ((gen.Next(100) + 1) > 25 ){
+                        Location.Creatures.Remove(this); //Creature leaves their current location
+
+                        Location = Location.ContainingDungeon.Rooms[
+                            Location.Adjacencies[gen.Next(Location.Adjacencies.Length)]]; //creatures picks where to travel
+                        
+                        Location.Creatures.Add(this); //creature enters the new location
+                    }
+                    break;
+                }
             }
         }
 

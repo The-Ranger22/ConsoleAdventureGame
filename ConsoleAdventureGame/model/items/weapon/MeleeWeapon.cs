@@ -24,7 +24,7 @@ namespace ConsoleAdventureGame.model.items.weapon{
                 case EnMeleeWeapons.AXE:{
                     AttacksPerTurn = 1;
                     _damageType = weapon.DamageType.SLASHING;
-                    _damageRoll = new DamageRoll(1, 6);
+                    _damageRoll = new DamageRoll(1, 8);
                     Name = "Axe";
                     Desc =
                         "A short-handled axe wrought from dirty iron with a cutting smile the breadth of a man's spread hand. Suitable for splitting skulls.";

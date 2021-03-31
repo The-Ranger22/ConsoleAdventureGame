@@ -34,6 +34,8 @@ namespace ConsoleAdventureGame.control{
                 describeRoom();
                 //prompt user w/ menu options
                 menu();
+                //after the user has taken their action, go through all the rooms and have all monsters act upon their behavior
+                monstersTurn();
             }
         }
         
@@ -297,7 +299,7 @@ namespace ConsoleAdventureGame.control{
                         else{
                             view.Output("a ", false);
                             view.Output($"{_currentRoom.Creatures[i].Name}", false, ConsoleColor.Red);
-                            view.Output(", ");
+                            view.Output(", ", false);
                         }
                     }
                 }
@@ -324,6 +326,23 @@ namespace ConsoleAdventureGame.control{
             }
             else{
                 view.Output("There is nothing here.");
+            }
+        }
+
+        private void monstersTurn(){
+            foreach (Room room in _dungeon.Rooms){
+                try{ 
+                    foreach (AbstractCreature creature in room.Creatures){
+                        if (creature is Monster monster){
+                            monster.Act();
+                        }
+                    }
+                }
+                catch (Exception e){
+                    Console.WriteLine(e);
+                    throw;
+                }
+                
             }
         }
     }

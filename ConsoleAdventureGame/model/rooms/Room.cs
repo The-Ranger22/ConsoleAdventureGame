@@ -9,16 +9,18 @@ namespace ConsoleAdventureGame.model.rooms{
         public string Description{ get; }
         public List<AbstractItem> Contents{ get; }
         public List<AbstractCreature> Creatures{ get; }
-
+        
+        public Dungeon ContainingDungeon{ get; }
         public bool Visited{ get; }
 
 
-        public Room(int id, int[] adjacencies){
+        public Room(int id, int[] adjacencies, Dungeon dungeon){
             Id = id;
             Adjacencies = adjacencies;
             Description = "A cold, damp and frankly depressing room built out of uneven and poorly cut stone.";
             Contents = new List<AbstractItem>();
             Creatures = new List<AbstractCreature>();
+            ContainingDungeon = dungeon;
             Visited = false;
         }
     }
