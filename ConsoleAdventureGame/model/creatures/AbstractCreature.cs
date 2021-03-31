@@ -7,7 +7,9 @@ using ConsoleAdventureGame.model.rooms;
 
 namespace ConsoleAdventureGame.model.creatures{
     public abstract class AbstractCreature{
-        private int Health{ get; set; }
+        public int Health{ get; set; }
+
+        public readonly int MaxHealth; 
         public string Name{ get; set; }
         public AbstractWeapon Weapon{ get; set; }
         public List<AbstractItem> Inventory{ get; set; }
@@ -16,6 +18,7 @@ namespace ConsoleAdventureGame.model.creatures{
 
         public AbstractCreature(int health, List<AbstractItem> inventory, AbstractArmor armor, AbstractWeapon weapon){
             Health = health;
+            MaxHealth = health;
             Inventory = inventory;
             Weapon = weapon;
             Armor = armor;

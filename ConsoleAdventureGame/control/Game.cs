@@ -192,13 +192,78 @@ namespace ConsoleAdventureGame.control{
                         }
                     }
                     else if (item is InfEquippable){
-                        view.Output("NOT YET IMPLEMENTED");
-                        //equip armor
-                        //drop armor
+                        while (true){
+                            view.Output(String.Format("What would you like to do with {0}?", item.Name));
+                            // Output item name and description
+                            view.Output(item.Name);
+                            view.Output(item.Desc);
+                            
+                            view.Output(String.Format(format, 1, "Equip"));
+                            view.Output(String.Format(format, 2, "Drop"));
+                            view.Output(String.Format(format, 0, "Return"));
+
+                            switch (view.Input()){
+                                case 0:{
+                                    //return to outer menu
+                                    return false;
+                                }
+                                case 1:{
+                                    ((InfEquippable) item).Equip(_player); // Equip the armor to the player
+                                    view.Output(String.Format("You are now wearing {0}.", item.Name));
+                                    return true;
+                                }
+                                case 2:{
+                                    _currentRoom.Contents.Add(_player.DropItem(_player.Inventory.IndexOf(item)));
+                                    //if the item dropped is the weapon the player is currently holding, set the player's current weapon to null
+                                    if (_player.Weapon == item){
+                                        _player.Weapon = null;
+                                    }
+                                    view.Output(String.Format("You drop {0}.", item.Name));
+                                    return true;
+                                } default:{
+                                    view.Output(String.Format("You want to do what with {0}?", item.Name));
+                                    break;
+                                }
+                            }
+                        }
                     }
                     else if (item is InfConsumable){
-                        //use item
-                        //drop item
+                        while (true){
+                            view.Output(String.Format("What would you like to do with {0}?", item.Name));
+                            // Output item name and description
+                            view.Output(item.Name);
+                            view.Output(item.Desc);
+
+                            view.Output(String.Format(format, 1, "Use"));
+                            view.Output(String.Format(format, 2, "Drop"));
+                            view.Output(String.Format(format, 0, "Return"));
+
+                            switch (view.Input()){
+                                case 0:{
+                                    //return to outer menu
+                                    return false;
+                                }
+                                case 1:{
+                                    item.Use(_player); // Player use's the item
+                                    view.Output(String.Format("You use {0}.", item.Name));
+                                    return true;
+                                }
+                                case 2:{
+                                    _currentRoom.Contents.Add(_player.DropItem(_player.Inventory.IndexOf(item)));
+                                    //if the item dropped is the weapon the player is currently holding, set the player's current weapon to null
+                                    if (_player.Weapon == item){
+                                        _player.Weapon = null;
+                                    }
+
+                                    view.Output(String.Format("You drop {0}.", item.Name));
+                                    return true;
+                                }
+                                default:{
+                                    view.Output(String.Format("You want to do what with {0}?", item.Name));
+                                    break;
+                                }
+                            }
+                        }
                     }
                     else{
                         view.Output("You have... what?");
