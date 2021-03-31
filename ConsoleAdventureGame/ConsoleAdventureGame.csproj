@@ -51,6 +51,7 @@
         <Compile Include="model\items\AbstractItem.cs" />
         <Compile Include="model\items\armor\AbstractArmor.cs" />
         <Compile Include="model\items\armor\Armor.cs" />
+        <Compile Include="model\items\Consumables\AgilityPotion.cs" />
         <Compile Include="model\items\Consumables\HealthPotions.cs" />
         <Compile Include="model\items\Consumables\StrengthPotion.cs" />
         <Compile Include="model\items\InfConsumable.cs" />

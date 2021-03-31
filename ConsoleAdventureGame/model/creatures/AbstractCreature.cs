@@ -17,6 +17,7 @@ namespace ConsoleAdventureGame.model.creatures{
         public AbstractArmor Armor{ get; set; }
         
         public bool StrengthBoost{ get; set; }
+        public bool AgilityBoost { get; set; }
 
         public AbstractCreature(int health, List<AbstractItem> inventory, AbstractArmor armor, AbstractWeapon weapon){
             Health = health;
@@ -31,10 +32,14 @@ namespace ConsoleAdventureGame.model.creatures{
 
         protected void Fight(AbstractCreature opponent){
             Random gen = new Random();
+            // Should not effect non-player characters. Calculate bonus value based on presence of strength or agility boost. 
             int actualAttacksPerTurn = StrengthBoost ? Weapon.AttacksPerTurn + 1 : Weapon.AttacksPerTurn;
+            int defenseScore = AgilityBoost
+                ? opponent.Armor.CalculateArmorScore() + 3
+                : opponent.Armor.CalculateArmorScore();
             if (Health > 0){ //if the player is still alive, attack
                 for (int i = 0; i < actualAttacksPerTurn; i++){
-                    if ((gen.Next(20) + 1) > opponent.Armor.CalculateArmorScore()){ //roll to hit
+                    if ((gen.Next(20) + 1) > defenseScore){ //roll to hit
                         opponent.TakeDamage((Weapon != null) ? Weapon.CalculateDamage() : new DamageRoll(1, 4).roll()); //roll damage. 
                     }
                 }
@@ -42,8 +47,9 @@ namespace ConsoleAdventureGame.model.creatures{
                     opponent.Fight(this);
                 }
             }
-
+            // At the end of fight's recursive calls, reset players values to false, as potions only should last one fight. 
             StrengthBoost = false;
+            AgilityBoost = false;
         }
 
         private void TakeDamage(int damage){
