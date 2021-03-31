@@ -44,7 +44,7 @@ namespace ConsoleAdventureGame.view{
              */
             
             
-            char block = ASCIISymbol.getChar(ASCIISymbol.BLOCK.FULL);
+            char block = IBM437Symbol.getChar(IBM437Symbol.BLOCK.FULL);
             int[,] displayPattern = new int[6, 45];
             int[] row0pattern = {2, 3, 4};
             int[] row1pattern = {1, 2, 3, 4, 5, 9, 11, 13, 16, 17, 20, 23, 25, 26, 27, 29, 31, 33, 34, 35, 36, 39, 40};

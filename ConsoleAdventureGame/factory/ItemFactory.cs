@@ -1,4 +1,4 @@
-﻿namespace ConsoleAdventureGame.Factory{
+﻿namespace ConsoleAdventureGame.factory{
     public class ItemFactory{
         
     }

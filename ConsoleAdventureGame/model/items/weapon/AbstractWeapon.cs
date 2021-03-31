@@ -1,4 +1,5 @@
 ﻿using System;
+using ConsoleAdventureGame.model.creatures;
 
 namespace ConsoleAdventureGame.model.items.weapon
 {
@@ -33,6 +34,12 @@ namespace ConsoleAdventureGame.model.items.weapon
         public DamageRoll DamageRoll(){
             return _damageRoll;
         }
+
+        public void Wield(AbstractCreature creature){
+            creature.Weapon = this;
+        }
+
+        
 
         public abstract int CalculateDamage();
 

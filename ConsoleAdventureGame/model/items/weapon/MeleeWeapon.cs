@@ -1,4 +1,6 @@
-﻿namespace ConsoleAdventureGame.model.items.weapon{
+﻿using ConsoleAdventureGame.model.creatures;
+
+namespace ConsoleAdventureGame.model.items.weapon{
     public class MeleeWeapon : AbstractWeapon{
         
         public MeleeWeapon(){
@@ -90,8 +92,8 @@
         }
 
 
-        public override void Use(){
-            throw new System.NotImplementedException();
+        public override void Use(AbstractCreature creature){
+            Wield(creature);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ConsoleAdventureGame.factory;
 using ConsoleAdventureGame.model.creatures;
 using ConsoleAdventureGame.model.items;
 using ConsoleAdventureGame.model.items.armor;
@@ -14,9 +15,9 @@ namespace ConsoleAdventureGame.control{
     /// Responsible for driving the game.
     /// </summary>
     public class Game{
-        static Player _player = new Player(20, new List<AbstractItem>(), new SimpleArmor(), new MeleeWeapon());
+        static Player _player = new Player(20, new List<AbstractItem>(), ArmorFactory.CreateLeather(), WeaponFactory.CreateSword());
         static Dungeon _dungeon = new Dungeon();
-        static Room _currentRoom = _dungeon.Rooms[1];
+        static Room _currentRoom = _dungeon.Rooms[0]; //player's initial spawn point
         static View view = new View();
         private static bool gameIsRunning = true;
 
@@ -169,7 +170,7 @@ namespace ConsoleAdventureGame.control{
                                 }
                                 case 1:{
                                     //wield the weapon
-                                    _player.Weapon = (AbstractWeapon) item; //set the player's weapon to the new one
+                                    ((InfWieldable) item).Wield(_player); //set the player's weapon to the new one
                                     view.Output(String.Format("You are now wielding {0}.", item.Name));
                                     return true;
                                 }

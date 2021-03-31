@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ConsoleAdventureGame.Factory;
+using ConsoleAdventureGame.factory;
 using ConsoleAdventureGame.model.creatures;
 using ConsoleAdventureGame.model.items;
 using ConsoleAdventureGame.model.items.armor;

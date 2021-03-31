@@ -1,10 +1,11 @@
 ﻿using System;
+using ConsoleAdventureGame.model.creatures;
 
 namespace ConsoleAdventureGame.model.items
 {
     public abstract class AbstractItem
     {
-        //TODO: Add container data field
+        
         private static int itemCount = 0;
         public readonly int id;
         public string Name{ get; set; }
@@ -23,7 +24,7 @@ namespace ConsoleAdventureGame.model.items
             this.Desc = desc;
         }
 
-        public abstract void Use();
+        public abstract void Use(AbstractCreature creature);
 
 
 

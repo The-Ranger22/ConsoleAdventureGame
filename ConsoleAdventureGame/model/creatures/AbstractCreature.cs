@@ -28,7 +28,7 @@ namespace ConsoleAdventureGame.model.creatures{
             Random gen = new Random();
             if (Health > 0){ //if the player is still alive, attack
                 for (int i = 0; i < Weapon.AttacksPerTurn; i++){
-                    if ((gen.Next(20) + 1) > opponent.Armor.ArmorHealth){ //roll to hit
+                    if ((gen.Next(20) + 1) > opponent.Armor.CalculateArmorScore()){ //roll to hit
                         opponent.TakeDamage((Weapon != null) ? Weapon.CalculateDamage() : new DamageRoll(1, 4).roll()); //roll damage. 
                     }
                 }

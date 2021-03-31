@@ -39,8 +39,10 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="control\Game.cs" />
-        <Compile Include="Factory\ItemFactory.cs" />
-        <Compile Include="Factory\MonsterFactory.cs" />
+        <Compile Include="factory\ArmorFactory.cs" />
+        <Compile Include="factory\ItemFactory.cs" />
+        <Compile Include="factory\MonsterFactory.cs" />
+        <Compile Include="factory\WeaponFactory.cs" />
         <Compile Include="model\creatures\AbstractCreature.cs" />
         <Compile Include="model\creatures\Monster.cs" />
         <Compile Include="model\creatures\CreatureState.cs" />
@@ -48,7 +50,8 @@
         <Compile Include="model\creatures\Player.cs" />
         <Compile Include="model\items\AbstractItem.cs" />
         <Compile Include="model\items\armor\AbstractArmor.cs" />
-        <Compile Include="model\items\armor\SimpleArmor.cs" />
+        <Compile Include="model\items\armor\Armor.cs" />
+        <Compile Include="model\items\armor\EnArmors.cs" />
         <Compile Include="model\items\InfConsumable.cs" />
         <Compile Include="model\items\InfEquippable.cs" />
         <Compile Include="model\items\InfWieldable.cs" />
@@ -61,14 +64,11 @@
         <Compile Include="model\rooms\Room.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="view\ASCIISymbol.cs" />
+        <Compile Include="view\IBM437Symbol.cs" />
         <Compile Include="view\View.cs" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="model\creatures\enemy" />
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="view\terminal.png" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

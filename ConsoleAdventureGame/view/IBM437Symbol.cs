@@ -1,5 +1,5 @@
 ﻿namespace ConsoleAdventureGame.view{
-    public class ASCIISymbol{
+    public class IBM437Symbol{
         
         
         

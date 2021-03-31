@@ -1,4 +1,5 @@
-﻿using ConsoleAdventureGame.model.items.weapon;
+﻿using ConsoleAdventureGame.model.creatures;
+using ConsoleAdventureGame.model.items.weapon;
 
 namespace ConsoleAdventureGame.model.items
 {
@@ -12,6 +13,8 @@ namespace ConsoleAdventureGame.model.items
         DamageType DamageType();
 
         DamageRoll DamageRoll();
-        
+
+        void Wield(AbstractCreature creature);
+
     }
 }
