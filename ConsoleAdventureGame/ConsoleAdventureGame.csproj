@@ -51,7 +51,6 @@
         <Compile Include="model\items\AbstractItem.cs" />
         <Compile Include="model\items\armor\AbstractArmor.cs" />
         <Compile Include="model\items\armor\Armor.cs" />
-        <Compile Include="model\items\armor\EnArmors.cs" />
         <Compile Include="model\items\InfConsumable.cs" />
         <Compile Include="model\items\InfEquippable.cs" />
         <Compile Include="model\items\InfWieldable.cs" />

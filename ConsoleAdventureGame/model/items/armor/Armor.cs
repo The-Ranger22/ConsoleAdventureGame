@@ -2,26 +2,16 @@
 
 namespace ConsoleAdventureGame.model.items.armor{
     public class Armor : AbstractArmor{
-
-        public Armor() : base("Armor", "A suit of Armor"){
-            
+        private int ArmorScore;
+        public Armor(int armorScore, string name, string desc) : base(name, desc){
+            ArmorScore = armorScore;
         }
-
-        public Armor(EnArmors armorType){
-            
-        }
-
-        public Armor(string name, string desc) : base(name, desc){
-            
-        }
-        
-        
         public override void Use(AbstractCreature creature){
             Equip(creature);
         }
 
         public override int CalculateArmorScore(){
-            throw new System.NotImplementedException();
+            return ArmorScore;
         }
     }
 }
