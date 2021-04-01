@@ -51,7 +51,8 @@ namespace ConsoleAdventureGame.model.creatures{
          * to false, as a potion will only last one fight. 
          */
         //TODO: Make the fight method return an int signifying how many hits successfully landed
-        public void Fight(AbstractCreature opponent){
+        public int Fight(AbstractCreature opponent){
+            int hits = 0;
             Random gen = new Random();
             // Should not effect non-player characters. Calculate bonus value based on presence of strength or agility boost. 
             int actualAttacksPerTurn = StrengthBoost ? Weapon.AttacksPerTurn + 1 : Weapon.AttacksPerTurn;
@@ -60,7 +61,7 @@ namespace ConsoleAdventureGame.model.creatures{
                 : opponent.Armor.CalculateArmorScore();
             for (int i = 0; i < actualAttacksPerTurn; i++){
                 if ((gen.Next(20) + 1) > defenseScore){
-                    
+                    hits++;
                     //roll to hit
                     opponent.TakeDamage((Weapon != null)
                         ? Weapon.CalculateDamage()
@@ -70,13 +71,12 @@ namespace ConsoleAdventureGame.model.creatures{
             // At the end of fight's recursive calls, reset players values to false, as potions only should last one fight. 
             StrengthBoost = false;
             AgilityBoost = false;
+            return hits;
         }
 
         /**
          * Removes the damage taken from the current creatures health. 
          */
-        private void TakeDamage(int damage){
-            Health -= damage;
-        }
+        protected abstract void TakeDamage(int damage);
     }
 }

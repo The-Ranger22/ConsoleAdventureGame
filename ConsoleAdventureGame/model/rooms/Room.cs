@@ -12,7 +12,8 @@ namespace ConsoleAdventureGame.model.rooms{
         
         public Dungeon ContainingDungeon{ get; }
         public bool Visited{ get; }
-
+        
+        
 
         public Room(int id, int[] adjacencies, Dungeon dungeon){
             Id = id;
@@ -22,6 +23,25 @@ namespace ConsoleAdventureGame.model.rooms{
             Creatures = new List<AbstractCreature>();
             ContainingDungeon = dungeon;
             Visited = false;
+        }
+
+        public bool ContainsAliveCreatures(){
+            foreach (AbstractCreature creature in Creatures){
+                if (creature.IsAlive()){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ContainsAliveCombatants(){
+            foreach (AbstractCreature creature in Creatures){
+                if (creature.IsAlive() && creature is Monster monster && monster.Behavior > NpcBehavior.NEUTRAL){
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

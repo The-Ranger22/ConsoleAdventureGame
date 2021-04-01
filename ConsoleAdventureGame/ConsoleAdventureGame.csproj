@@ -39,6 +39,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="control\Game.cs" />
+        <Compile Include="control\GameState.cs" />
         <Compile Include="factory\ArmorFactory.cs" />
         <Compile Include="factory\ItemFactory.cs" />
         <Compile Include="factory\MonsterFactory.cs" />

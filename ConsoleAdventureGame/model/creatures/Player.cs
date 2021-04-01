@@ -31,8 +31,8 @@ namespace ConsoleAdventureGame.model.creatures
         }
 
 
-
-
-
+        protected override void TakeDamage(int damage){
+            Health -= damage;
+        }
     }
 }

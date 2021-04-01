@@ -74,8 +74,16 @@ namespace ConsoleAdventureGame.model.creatures{
         }
 
 
-
-
-
+        protected override void TakeDamage(int damage){
+            Health -= damage;
+            if (Health <= 0 && State != CreatureState.DEAD){
+                State = CreatureState.DEAD;
+                Location.Contents.AddRange(Inventory); //upon death, add contents of the inventory to their current location
+            }
+            else if (IsAlive()){
+                State = CreatureState.COMBAT;
+                Behavior = NpcBehavior.ANGRY;
+            }
+        }
     }
 }

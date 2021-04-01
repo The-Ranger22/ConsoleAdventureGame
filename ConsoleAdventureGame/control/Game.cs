@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using ConsoleAdventureGame.factory;
 using ConsoleAdventureGame.model.creatures;
 using ConsoleAdventureGame.model.items;
@@ -15,18 +16,23 @@ namespace ConsoleAdventureGame.control{
     /// Responsible for driving the game.
     /// </summary>
     public class Game{
-        static Player _player = new Player(20, new List<AbstractItem>(), ArmorFactory.CreateLeather(),
+        private static Player _player = new Player(20, new List<AbstractItem>(), ArmorFactory.CreateLeather(),
             WeaponFactory.CreateSword());
 
-        static Dungeon _dungeon = new Dungeon();
-        static Room _currentRoom = _dungeon.Rooms[0]; //player's initial spawn point
-        static View view = new View();
+        private static Dungeon _dungeon = new Dungeon();
+        private static Room _currentRoom = _dungeon.Rooms[0]; //player's initial spawn point
+        private static int _previousRoomId = _currentRoom.Id;
+        private static View view = new View();
         private static bool gameIsRunning = true;
+        private static bool inCombat = false;
+        private static GameState _gameState = GameState.RUNNING;
 
         public void run(){
             //display opening message/title
             view.Output("AdventureGame v0.1");
             view.displayTitle();
+            view.FormattedOutput("&redOver-engineered is the &grnname of the &dylgame!");
+
             //main gameplay loop
             while (gameIsRunning){
                 //display the information about the room
@@ -35,17 +41,32 @@ namespace ConsoleAdventureGame.control{
                 //    - display descriptions of the contents of the room
                 describeRoom();
                 //check if combat is going to occur w/ any creature inside the room
-                combat();
-                //TODO: Check if the player is dead
-                //prompt user w/ menu options
-                menu();
-                //after the user has taken their action, go through all the rooms and have all monsters act upon their behavior
-                monstersTurn();
+                if (!combat()){
+                    //prompt user w/ menu options
+                    menu();
+                    //after the user has taken their action, go through all the rooms and have all monsters act upon their behavior
+                    monstersTurn();
+                }
+
+
+                if (_gameState != GameState.RUNNING){
+                    gameIsRunning = false;
+                }
+            }
+
+            switch (_gameState){
+                case GameState.DEFEAT:{
+                    view.FormattedOutput("&magDefeat! The &redgoblin &redhordes have bested you!");
+                    break;
+                }
+                case GameState.VICTORY:{
+                    break;
+                }
             }
         }
 
 
-        private bool menu(){
+        private void menu(){
             bool actionTaken = false;
 
             while (!actionTaken){
@@ -53,6 +74,8 @@ namespace ConsoleAdventureGame.control{
                 view.Output("[1] : Inspect room");
                 view.Output("[2] : Move");
                 view.Output("[3] : Inventory");
+                view.Output("[4] : Take a hostile action");
+                view.Output("[0] : Quit");
                 switch (view.Input()){
                     case 1:{
                         //inspect menu
@@ -69,14 +92,17 @@ namespace ConsoleAdventureGame.control{
                         actionTaken = inventoryMenu();
                         break;
                     }
+                    case 4:{
+                        actionTaken = fightMenu();
+                        break;
+                    }
                     case 0:{
-                        //quit
-                        return false;
+                        //quit the game
+                        _gameState = GameState.DEFEAT;
+                        return;
                     }
                 }
             }
-
-            return true;
         }
 
         private bool inspectMenu(){
@@ -133,6 +159,7 @@ namespace ConsoleAdventureGame.control{
 
                 if (input > -1 && input < _currentRoom.Adjacencies.Length){
                     view.Output(String.Format("You head to room {0}", _currentRoom.Adjacencies[input]));
+                    _previousRoomId = _currentRoom.Id;
                     _currentRoom = _dungeon.Rooms[_currentRoom.Adjacencies[input]];
                     return true;
                 }
@@ -289,8 +316,111 @@ namespace ConsoleAdventureGame.control{
             }
         }
 
+        private bool combatMenu(){
+            if (_currentRoom.Creatures.Count > 0 && _currentRoom.ContainsAliveCreatures()){
+                bool actionTaken = false;
+                while (!actionTaken){
+                    view.FormattedOutput("What would you like to do?");
+                    view.FormattedOutput("[1] : Fight");
+                    view.FormattedOutput("[2] : Inventory");
+                    view.FormattedOutput("[3] : &dylEscape");
+
+                    switch (view.Input()){
+                        case 1:{
+                            //choose an enemy to fight
+                            actionTaken = fightMenu();
+                            break;
+                        }
+                        case 2:{
+                            //manage inventory
+                            actionTaken = inventoryMenu();
+                            break;
+                        }
+                        case 3:{
+                            //Escape !!! -> only available if there are monsters in the combat state in the room
+                            if (inCombat){
+                                Random random = new Random();
+
+                                if (random.Next() % 2 == 0){
+                                    //50% chance to escape
+                                    inCombat = false;
+                                    moveMenu();
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+            else{
+                view.FormattedOutput("There is no one to fight!");
+                return false;
+            }
+
+            return false;
+        }
+
+        private bool fightMenu(){
+            while (true){
+                view.FormattedOutput("Who would you like to attack?");
+                for (int i = 0; i < _currentRoom.Creatures.Count; i++){
+                    if (_currentRoom.Creatures[i] is Monster monster){
+                        switch (monster.State){
+                            case CreatureState.IDLE:
+                            case CreatureState.HUNTING:{
+                                view.FormattedOutput(
+                                    $"[{i + 1}] : A &mag{monster.Behavior.ToString().ToLower()} &red{monster.Name}. They are standing &grnidle.");
+                                break;
+                            }
+                            case CreatureState.COMBAT:{
+                                view.FormattedOutput(
+                                    $"[{i + 1}] : A &mag{monster.Behavior.ToString().ToLower()} &red{monster.Name}. They are &ylwengaging you in &redcombat!");
+                                break;
+                            }
+                            default: break;
+                        }
+                    }
+                    else{
+                        view.FormattedOutput($"[{i + 1}] : A &drd{_currentRoom.Creatures[i]}.");
+                    }
+                }
+
+                view.FormattedOutput("[0] : Return");
+
+                int adjustedInput = view.Input() - 1;
+                if (adjustedInput == -1){
+                    return false;
+                }
+
+                //if user input is within the bounds of the room's creatures list, fight a creature
+                if (adjustedInput >= 0 && adjustedInput < _currentRoom.Creatures.Count){
+                    if (_currentRoom.Creatures[adjustedInput] is Monster monster){
+                        view.FormattedOutput(
+                            $"You swing your &blu{_player.Weapon.Name} &ylw{_player.Weapon.AttacksPerTurn} time(s). &ylw{_player.Fight(monster)} of your blows connect with the &red{monster.Name}!");
+                        if (monster.IsAlive()){
+                            monster.Behavior = NpcBehavior.ANGRY;
+                            monster.State = CreatureState.COMBAT;
+                        }
+
+                        return true;
+                    }
+                }
+                else{
+                    view.FormattedOutput("Ah, the most dangerous of &redfoes. Nothing.");
+                }
+            }
+        }
+
         private void describeRoom(){
-            view.Output("You enter the room.");
+            if (_currentRoom.Id == _previousRoomId){
+                view.FormattedOutput($"You are in room &dyl{_currentRoom.Id}.");
+            }
+            else{
+                view.Output("You enter the room.");
+                _previousRoomId = _currentRoom.Id;
+            }
+
             view.Output(_currentRoom.Description);
             //display all the items on the floor
             if (_currentRoom.Contents.Count > 0){
@@ -316,24 +446,35 @@ namespace ConsoleAdventureGame.control{
             //display all the creatures inside the room if there are any
             if (_currentRoom.Creatures.Count > 0){
                 if (_currentRoom.Creatures.Count == 1){
-                    view.Output("You see a ", false);
-                    view.Output($"{_currentRoom.Creatures[0].Name}", false, ConsoleColor.Red);
-                    view.Output(".");
+                    if (_currentRoom.Creatures[0] is Monster monster){
+                        view.FormattedOutput(
+                            $"You see a &red{monster.Name}. They are {((monster.IsAlive()) ? $"&mag{monster.Behavior.ToString().ToLower()}" : $"&dgy{monster.State.ToString().ToLower()}")}.");
+                    }
+                    else{
+                        view.FormattedOutput($"You see a &ylw{_currentRoom.Creatures[0].Name}");
+                    }
                 }
                 else{
-                    view.Output("You see ", false);
-                    for (int i = 0; i < _currentRoom.Creatures.Count; i++){
-                        if (i == _currentRoom.Creatures.Count - 1){
-                            view.Output("and a ", false);
-                            view.Output($"{_currentRoom.Creatures[i].Name}", false, ConsoleColor.Red);
-                            view.Output(".");
-                        }
-                        else{
-                            view.Output("a ", false);
-                            view.Output($"{_currentRoom.Creatures[i].Name}", false, ConsoleColor.Red);
-                            view.Output(", ", false);
+                    StringBuilder outputString = new StringBuilder();
+                    outputString.Append("You see a ");
+                    
+                    foreach (AbstractCreature creature in _currentRoom.Creatures){
+                        if (creature is Monster monster){
+                            
+                            outputString.Append(
+                                $"{(monster.IsAlive() ? $"&mag{monster.Behavior.ToString().ToLower()}" : $"&dgy{monster.State.ToString().ToLower()}")} &red{monster.Name}");
+                            if (creature == _currentRoom.Creatures[_currentRoom.Creatures.Count - 2]){ //if the current creature is the second to last creature, append 'and a '
+                                outputString.Append(" and a ");
+                            }
+                            else if(creature != _currentRoom.Creatures[_currentRoom.Creatures.Count - 1]){ //if the current creature is not the last creature, append a comma
+                                outputString.Append(", ");
+                            }
                         }
                     }
+                    
+                    view.FormattedOutput(outputString.ToString());
+                    
+                    
                 }
             }
             else{
@@ -347,7 +488,6 @@ namespace ConsoleAdventureGame.control{
                 foreach (AbstractCreature creature in room.Creatures){
                     if (creature is Monster monster){
                         turnOrder.Enqueue(monster);
-                        
                     }
                 }
             }
@@ -357,30 +497,33 @@ namespace ConsoleAdventureGame.control{
             }
         }
 
-        private void combat(){
+        private bool combat(){
+            bool combatHasOccured = false;
+            //Combat is now commencing
+            inCombat = true; //TODO: make local variable
             //check if room is populated
-            if (_currentRoom.Creatures.Count > 0){
+            if (_currentRoom.Creatures.Count > 0 && _currentRoom.ContainsAliveCombatants()){
+                combatHasOccured = true;
                 Queue<Monster> turnOrder = new Queue<Monster>();
-                //include all monsters down to tussle
+                //Enqueue all monsters down to tussle
                 foreach (AbstractCreature abstractCreature in _currentRoom.Creatures){
                     if (abstractCreature is Monster monster && monster.Behavior > NpcBehavior.NEUTRAL &&
                         monster.State != CreatureState.DEAD){
+                        //set the state of the creature to combat
+                        monster.State = CreatureState.COMBAT;
                         turnOrder.Enqueue(monster);
                     }
                 }
-
                 while (turnOrder.Count > 0 && _player.IsAlive()){
                     //prompt player to pick an action
-                    //TODO: Prompt player to pick an action
+                    //TODO: Prompt player to pick a combat action
+                    inCombat =
+                        combatMenu(); //depending on the action taken by the player inside the combat menu, they may remain in combat or escape it (true if they remain, false if they escape)
                     view.Output("Player: ", false);
                     view.Output($"{_player.Health}", foreground: ConsoleColor.Green);
-                    //TODO: Make the fight method return an int signifying how many hits successfully landed
-                    _player.Fight(turnOrder.Peek());
 
                     if (!turnOrder.Peek().IsAlive()){
                         view.Output($"The {turnOrder.Peek().Name} is dead.");
-                        _currentRoom.Contents.AddRange(turnOrder.Peek().Inventory);
-                        turnOrder.Peek().State = CreatureState.DEAD;
                         turnOrder.Dequeue(); //remove the dead from the turn order because they are dead
                     }
 
@@ -392,9 +535,21 @@ namespace ConsoleAdventureGame.control{
                         monster.Fight(_player);
                         tempQueue.Enqueue(monster);
                     }
+                    //TODO: DISPLAY ENEMY COMBAT
                     turnOrder = tempQueue;
+                    //TODO: Check for monsters that were not initially aggressive and add them to the queue
+                    foreach (AbstractCreature creature in _currentRoom.Creatures){
+                        if (!turnOrder.Contains(creature) && creature.IsAlive()){
+                            if (creature is Monster monster && monster.State == CreatureState.COMBAT){
+                                turnOrder.Enqueue(monster);
+                            }
+                        }
+                    }
                 }
             }
+
+            inCombat = false; //combat has ended
+            return combatHasOccured;
         }
     }
 }
