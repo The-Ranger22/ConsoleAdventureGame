@@ -4,7 +4,7 @@ using ConsoleAdventureGame.model.items.armor;
 using ConsoleAdventureGame.model.items;
 using ConsoleAdventureGame.model.items.weapon;
 using ConsoleAdventureGame.model.rooms;
-//Test
+
 /*
  * Class Description: Class representing properties and behaviors of Monsters. Extends the abstract creature class and gives the moster an agression
  * rating and ability to act and take damage.
