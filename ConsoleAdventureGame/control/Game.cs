@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,8 +6,6 @@ using System.Text;
 using ConsoleAdventureGame.factory;
 using ConsoleAdventureGame.model.creatures;
 using ConsoleAdventureGame.model.items;
-using ConsoleAdventureGame.model.items.armor;
-using ConsoleAdventureGame.model.items.weapon;
 using ConsoleAdventureGame.model.rooms;
 using ConsoleAdventureGame.view;
 
@@ -29,7 +27,7 @@ namespace ConsoleAdventureGame.control{
 
         public void run(){
             //display opening message/title
-            view.Output("AdventureGame v0.1");
+            view.FormattedOutput("&dmaAdventureGame &grnv0.2");
             view.displayTitle();
             view.FormattedOutput("&redOver-engineered is the &grnname of the &dylgame!");
 
@@ -70,12 +68,12 @@ namespace ConsoleAdventureGame.control{
             bool actionTaken = false;
 
             while (!actionTaken){
-                view.Output("What would you like to do?");
-                view.Output("[1] : Inspect room");
-                view.Output("[2] : Move");
-                view.Output("[3] : Inventory");
-                view.Output("[4] : Take a hostile action");
-                view.Output("[0] : Quit");
+                view.FormattedOutput("What would you like to do?");
+                view.FormattedOutput("[1] : Inspect room");
+                view.FormattedOutput("[2] : Move");
+                view.FormattedOutput("[3] : Inventory");
+                view.FormattedOutput("[4] : Take a hostile action");
+                view.FormattedOutput("[0] : Quit");
                 switch (view.Input()){
                     case 1:{
                         //inspect menu
@@ -107,35 +105,35 @@ namespace ConsoleAdventureGame.control{
 
         private bool inspectMenu(){
             if (_currentRoom.Contents.Count < 1){
-                view.Output("There is nothing to pick up.");
+                view.FormattedOutput("There is nothing to pick up.");
             }
             else{
                 bool isInspecting = true;
                 while (isInspecting){
                     int count = 0, input;
-                    view.Output("What would you like to pick up?");
+                    view.FormattedOutput("What would you like to pick up?");
                     foreach (AbstractItem item in _currentRoom.Contents){
-                        view.Output(String.Format("[{0}] : {1}", ++count, item.Name));
+                        view.FormattedOutput($"[{++count}] : {item.Name}");
                     }
 
-                    view.Output("Specify the number of the item you would like to pick up or enter 0 to return: ");
+                    view.FormattedOutput("Specify the number of the item you would like to pick up or enter 0 to return: ");
                     input = view.Input() - 1; //adjust user input to compensate for index offset
                     if (input == -1){
                         return false;
                     }
 
-                    if (input >= 0 && input < count){
+                    if (input >= 0 && input < _currentRoom.Contents.Count){
                         if (_player.PickUp(_currentRoom.Contents[input])){
-                            view.Output($"You picked up {_currentRoom.Contents[input].Name}");
+                            view.FormattedOutput($"You picked up &blu{_currentRoom.Contents[input].Name}");
                             _currentRoom.Contents.RemoveAt(input);
                             return true;
                         }
 
-                        view.Output("You've carrying to much! You'll need to part ways with something you hoarder.");
+                        view.FormattedOutput("You've &dylcarrying to much! You'll need to part ways with something you hoarder.");
                         isInspecting = false;
                     }
                     else{
-                        view.Output("What item are you talking about?");
+                        view.FormattedOutput("What item are you talking about?");
                     }
                 }
             }
@@ -146,25 +144,25 @@ namespace ConsoleAdventureGame.control{
 
         private bool moveMenu(){
             while (true){
-                view.Output("Where would you like to go?");
+                view.FormattedOutput("Where would you like to go?");
                 for (int i = 0; i < _currentRoom.Adjacencies.Length; i++){
-                    view.Output(String.Format("[{0}] : Room {1}", i + 1, _currentRoom.Adjacencies[i]));
+                    view.FormattedOutput(String.Format("[{0}] : Room {1}", i + 1, _currentRoom.Adjacencies[i]));
                 }
 
-                view.Output("Specify the number of the room you would like to go to. Enter 0 to return.");
+                view.FormattedOutput("Specify the number of the room you would like to go to. Enter 0 to return.");
                 int input = view.Input() - 1;
                 if (input == -1){
                     return false;
                 }
 
                 if (input > -1 && input < _currentRoom.Adjacencies.Length){
-                    view.Output(String.Format("You head to room {0}", _currentRoom.Adjacencies[input]));
+                    view.FormattedOutput($"You head to room &dyl{_currentRoom.Adjacencies[input]}");
                     _previousRoomId = _currentRoom.Id;
                     _currentRoom = _dungeon.Rooms[_currentRoom.Adjacencies[input]];
                     return true;
                 }
                 else{
-                    view.Output("Well, you're not getting there from here.");
+                    view.FormattedOutput("Well, you're not getting there from here.");
                 }
 
                 Console.Clear();
@@ -173,14 +171,14 @@ namespace ConsoleAdventureGame.control{
 
         private bool inventoryMenu(){
             while (true){
-                view.Output("Manage your inventory.");
+                view.FormattedOutput("Manage your inventory.");
                 string format = "[{0}] : {1}";
                 for (int i = 0; i < _player.Inventory.Count; i++){
-                    view.Output(String.Format(format, i + 1, _player.Inventory[i].Name));
+                    view.FormattedOutput(String.Format(format, i + 1, _player.Inventory[i].Name));
                 }
 
-                view.Output("[0] : Return");
-                view.Output("Specify the number of the item you would like to select.");
+                view.FormattedOutput("[0] : Return");
+                view.FormattedOutput("Specify the number of the item you would like to select.");
                 int input = view.Input() - 1;
                 if (input == -1){
                     return false;
@@ -190,15 +188,13 @@ namespace ConsoleAdventureGame.control{
                     AbstractItem item = _player.Inventory[input];
                     if (item is InfWieldable){
                         while (true){
-                            view.Output(String.Format("What would you like to do with {0}?", item.Name));
-                            //output the name of the weapon
-                            view.Output(item.Name);
-                            //output the description of the weapon
-                            view.Output(item.Desc);
+                            view.FormattedOutput($"What would you like to do with &blu{item.Name}?");
+                            //output the name of the weapon and its description
+                            view.FormattedOutput($"&blu{item.Name}. {item.Desc}");
                             //list available actions that the user can perform on the weapon
-                            view.Output(String.Format(format, 1, "Wield"));
-                            view.Output(String.Format(format, 2, "Drop"));
-                            view.Output(String.Format(format, 0, "Return"));
+                            view.FormattedOutput(string.Format(format, 1, "Wield"));
+                            view.FormattedOutput(string.Format(format, 2, "Drop"));
+                            view.FormattedOutput(string.Format(format, 0, "Return"));
                             switch (view.Input()){
                                 case 0:{
                                     //return to outer menu
@@ -207,7 +203,7 @@ namespace ConsoleAdventureGame.control{
                                 case 1:{
                                     //wield the weapon
                                     ((InfWieldable) item).Wield(_player); //set the player's weapon to the new one
-                                    view.Output(String.Format("You are now wielding {0}.", item.Name));
+                                    view.FormattedOutput($"You are now wielding &blu{item.Name}.");
                                     return true;
                                 }
                                 case 2:{
@@ -218,11 +214,11 @@ namespace ConsoleAdventureGame.control{
                                         _player.Weapon = null;
                                     }
 
-                                    view.Output(String.Format("You drop {0}.", item.Name));
+                                    view.FormattedOutput($"You drop &blu{item.Name}.");
                                     return true;
                                 }
                                 default:{
-                                    view.Output(String.Format("You want to do what with {0}?", item.Name));
+                                    view.FormattedOutput($"You want to do what with &blu{item.Name}?");
                                     break;
                                 }
                             }
@@ -230,14 +226,13 @@ namespace ConsoleAdventureGame.control{
                     }
                     else if (item is InfEquippable){
                         while (true){
-                            view.Output(String.Format("What would you like to do with {0}?", item.Name));
+                            view.FormattedOutput($"What would you like to do with &blu{item.Name}?");
                             // Output item name and description
-                            view.Output(item.Name);
-                            view.Output(item.Desc);
+                            view.FormattedOutput($"&blu{item.Name}. {item.Desc}");
 
-                            view.Output(String.Format(format, 1, "Equip"));
-                            view.Output(String.Format(format, 2, "Drop"));
-                            view.Output(String.Format(format, 0, "Return"));
+                            view.FormattedOutput(string.Format(format, 1, "Equip"));
+                            view.FormattedOutput(string.Format(format, 2, "Drop"));
+                            view.FormattedOutput(string.Format(format, 0, "Return"));
 
                             switch (view.Input()){
                                 case 0:{
@@ -246,7 +241,7 @@ namespace ConsoleAdventureGame.control{
                                 }
                                 case 1:{
                                     ((InfEquippable) item).Equip(_player); // Equip the armor to the player
-                                    view.Output(String.Format("You are now wearing {0}.", item.Name));
+                                    view.FormattedOutput($"You are now wearing &blu{item.Name}.");
                                     return true;
                                 }
                                 case 2:{
@@ -256,11 +251,11 @@ namespace ConsoleAdventureGame.control{
                                         _player.Weapon = null;
                                     }
 
-                                    view.Output(String.Format("You drop {0}.", item.Name));
+                                    view.FormattedOutput($"You drop &blu{item.Name}.");
                                     return true;
                                 }
                                 default:{
-                                    view.Output(String.Format("You want to do what with {0}?", item.Name));
+                                    view.FormattedOutput($"You want to do what with &blu{item.Name}?");
                                     break;
                                 }
                             }
@@ -268,14 +263,13 @@ namespace ConsoleAdventureGame.control{
                     }
                     else if (item is InfConsumable){
                         while (true){
-                            view.Output(String.Format("What would you like to do with {0}?", item.Name));
+                            view.FormattedOutput($"What would you like to do with &blu{item.Name}?");
                             // Output item name and description
-                            view.Output(item.Name);
-                            view.Output(item.Desc);
+                            view.FormattedOutput($"&blu{item.Name}. {item.Desc}");
 
-                            view.Output(String.Format(format, 1, "Use"));
-                            view.Output(String.Format(format, 2, "Drop"));
-                            view.Output(String.Format(format, 0, "Return"));
+                            view.FormattedOutput(string.Format(format, 1, "Use"));
+                            view.FormattedOutput(string.Format(format, 2, "Drop"));
+                            view.FormattedOutput(string.Format(format, 0, "Return"));
 
                             switch (view.Input()){
                                 case 0:{
@@ -284,7 +278,7 @@ namespace ConsoleAdventureGame.control{
                                 }
                                 case 1:{
                                     item.Use(_player); // Player use's the item
-                                    view.Output(String.Format("You use {0}.", item.Name));
+                                    view.FormattedOutput($"You use &blu{item.Name}.");
                                     return true;
                                 }
                                 case 2:{
@@ -294,25 +288,24 @@ namespace ConsoleAdventureGame.control{
                                         _player.Weapon = null;
                                     }
 
-                                    view.Output(String.Format("You drop {0}.", item.Name));
+                                    view.FormattedOutput($"You drop {item.Name}.");
                                     return true;
                                 }
                                 default:{
-                                    view.Output(String.Format("You want to do what with {0}?", item.Name));
+                                    view.FormattedOutput(String.Format("You want to do what with {0}?", item.Name));
                                     break;
                                 }
                             }
                         }
                     }
                     else{
-                        view.Output("You have... what?");
+                        view.FormattedOutput("You have... &drdw &dgnh &dbla &dylt?");
                     }
                 }
                 else{
-                    view.Output("You're rather imaginative, aren't you?");
+                    view.FormattedOutput("You're rather imaginative, aren't you?");
                 }
-
-                //Console.Clear();
+                
             }
         }
 
@@ -417,30 +410,33 @@ namespace ConsoleAdventureGame.control{
                 view.FormattedOutput($"You are in room &dyl{_currentRoom.Id}.");
             }
             else{
-                view.Output("You enter the room.");
+                view.FormattedOutput("You enter the room.");
                 _previousRoomId = _currentRoom.Id;
             }
 
-            view.Output(_currentRoom.Description);
+            view.FormattedOutput(_currentRoom.Description);
             //display all the items on the floor
             if (_currentRoom.Contents.Count > 0){
                 if (_currentRoom.Contents.Count == 1){
-                    view.Output($"You see a {_currentRoom.Contents[0].Name} lying on the floor.");
+                    view.FormattedOutput($"You see a {_currentRoom.Contents[0].Name} lying on the floor.");
                 }
                 else{
-                    view.Output("On the floor, you see ", false);
+                    StringBuilder outputString = new StringBuilder();
+                    outputString.Append("On the floor, you see ");
+                    
                     for (int i = 0; i < _currentRoom.Contents.Count; i++){
                         if (i == _currentRoom.Contents.Count - 1){
-                            view.Output($"and a {_currentRoom.Contents[i].Name}.");
+                            outputString.Append($"and a &blu{_currentRoom.Contents[i].Name}.");
                         }
                         else{
-                            view.Output($"a {_currentRoom.Contents[i].Name}, ", false);
+                            outputString.Append($"a &blu{_currentRoom.Contents[i].Name}, ");
                         }
                     }
+                    view.FormattedOutput(outputString.ToString());
                 }
             }
             else{
-                view.Output("There is nothing here.");
+                view.FormattedOutput("There is nothing here.");
             }
 
             //display all the creatures inside the room if there are any
@@ -478,7 +474,7 @@ namespace ConsoleAdventureGame.control{
                 }
             }
             else{
-                view.Output("There is no one here.");
+                view.FormattedOutput("There is no one here.");
             }
         }
 
@@ -519,24 +515,19 @@ namespace ConsoleAdventureGame.control{
                     //TODO: Prompt player to pick a combat action
                     inCombat =
                         combatMenu(); //depending on the action taken by the player inside the combat menu, they may remain in combat or escape it (true if they remain, false if they escape)
-                    view.Output("Player: ", false);
-                    view.Output($"{_player.Health}", foreground: ConsoleColor.Green);
+                    
+                    view.FormattedOutput($"Player: &grn{_player.Health}");
 
                     if (!turnOrder.Peek().IsAlive()){
-                        view.Output($"The {turnOrder.Peek().Name} is dead.");
+                        view.FormattedOutput($"The &red{turnOrder.Peek().Name} is dead.");
                         turnOrder.Dequeue(); //remove the dead from the turn order because they are dead
                     }
 
                     Queue<Monster> tempQueue = new Queue<Monster>();
                     while (turnOrder.Count > 0){
                         Monster monster = turnOrder.Dequeue();
-                        view.Output($"{monster.Id}: ", false);
-                        view.Output($"{monster.Health}", foreground: ConsoleColor.Red);
-                        
                         view.FormattedOutput(
                             $"The vicious &red{monster.Name} swings his &red{monster.Weapon.Name} &ylw{monster.Weapon.AttacksPerTurn} time(s). &ylw{monster.Fight(_player)} of his blows connect with you!");
-                        
-                        
                         tempQueue.Enqueue(monster);
                     }
                     //TODO: DISPLAY ENEMY COMBAT

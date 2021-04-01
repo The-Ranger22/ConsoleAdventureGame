@@ -65,7 +65,7 @@ namespace ConsoleAdventureGame.view{
             if (message != null){
                 string[] messages = message.Split(' ');
                 foreach (string msg in messages){
-                    if (msg[0] == '&'){
+                    if ((!msg.Equals("")) && msg[0] == '&'){
                         //check for ignorable characters
                         Output(msg.Substring(4), false, determineColor(msg));
                     }
