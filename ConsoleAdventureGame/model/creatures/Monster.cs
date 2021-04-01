@@ -5,6 +5,8 @@ using ConsoleAdventureGame.model.items;
 using ConsoleAdventureGame.model.items.weapon;
 using ConsoleAdventureGame.model.rooms;
 
+
+ 
 namespace ConsoleAdventureGame.model.creatures{
     public class Monster : AbstractCreature{
         

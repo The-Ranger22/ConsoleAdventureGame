@@ -4,9 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-/*
- * Class Description: Handles the input and output from and to the command line. Also contains the initial ADVENTURE display as well as the color constants for the command line. 
- */
+
+ /*
+  * Class Description: Handles the input and output from and to the command line. Also contains the initial ADVENTURE display as well as the color constants for the command line.
+  */
+
 namespace ConsoleAdventureGame.view{
     public class View{
         private const string CC_BLUE = "&blu";
@@ -24,10 +26,13 @@ namespace ConsoleAdventureGame.view{
         private const string CC_DARK_MAGENTA = "&dma";
         private const string CC_DARK_YELLOW = "&dyl";
 
-        /*
-         * Params: 
-         * Generic output method
-         */
+        /// <summary>
+        /// A generic output method for outputting text to the console. Provides the ability to add colors and a newline if desired. 
+        /// </summary>
+        /// <param name="message"> the string message to be output</param>
+        /// <param name="newline"> true if a newline is desired after the message</param>
+        /// <param name="foreground"> color value for the text</param>
+        /// <param name="background"> color value for the background of the message</param>
         public void Output(string message, bool newline = true, ConsoleColor foreground = ConsoleColor.White,
             ConsoleColor background = ConsoleColor.Black){
             Console.ForegroundColor = foreground;
@@ -43,7 +48,11 @@ namespace ConsoleAdventureGame.view{
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
         }
-
+        
+        /// <summary>
+        /// Method for receiving integer input from the user. No strings from the user are required for the game at this time
+        /// </summary>
+        /// <returns>The user given integer</returns>
         public int Input(){
             String input = Console.ReadLine();
             bool isInt = false;
@@ -61,6 +70,11 @@ namespace ConsoleAdventureGame.view{
             return Int32.Parse(input);
         }
 
+        /// <summary>
+        /// Outputs the given message with and accepts custom formatting with the use of color
+        /// </summary>
+        /// <param name="message">The string to be output</param>
+        /// <param name="newline">True if a newline after the message is desired</param>
         public void FormattedOutput(string message, bool newline = true){
             if (message != null){
                 string[] messages = message.Split(' ');

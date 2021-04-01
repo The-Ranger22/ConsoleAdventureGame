@@ -17,15 +17,15 @@ namespace ConsoleAdventureGame.model.creatures{
         public readonly string Id;
         public int Health{ get; set; }
 
-        public readonly int MaxHealth;
+        public readonly int MaxHealth;  //Player's health cannot exceed the starting value after taking a health potion.
         public string Name{ get; set; }
         public AbstractWeapon Weapon{ get; set; }
         public List<AbstractItem> Inventory{ get; set; }
 
         public AbstractArmor Armor{ get; set; }
 
-        public bool StrengthBoost{ get; set; }
-        public bool AgilityBoost{ get; set; }
+        public bool StrengthBoost{ get; set; } // Set to true when the player consumes a strength potion
+        public bool AgilityBoost{ get; set; }  // Set to true when the player consumes an agility potion
 
         public AbstractCreature(int health, List<AbstractItem> inventory, AbstractArmor armor, AbstractWeapon weapon){
             Id = String.Format("CR{0}", creaturesCreated++);
