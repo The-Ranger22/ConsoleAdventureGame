@@ -4,6 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
+/*
+ * Class Description: Handles the input and output from and to the command line. Also contains the initial ADVENTURE display as well as the color constants for the command line. 
+ */
 namespace ConsoleAdventureGame.view{
     public class View{
         private const string CC_BLUE = "&blu";
@@ -21,6 +24,10 @@ namespace ConsoleAdventureGame.view{
         private const string CC_DARK_MAGENTA = "&dma";
         private const string CC_DARK_YELLOW = "&dyl";
 
+        /*
+         * Params: 
+         * Generic output method
+         */
         public void Output(string message, bool newline = true, ConsoleColor foreground = ConsoleColor.White,
             ConsoleColor background = ConsoleColor.Black){
             Console.ForegroundColor = foreground;

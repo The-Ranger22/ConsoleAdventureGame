@@ -431,7 +431,7 @@ namespace ConsoleAdventureGame.control{
                     view.Output("On the floor, you see ", false);
                     for (int i = 0; i < _currentRoom.Contents.Count; i++){
                         if (i == _currentRoom.Contents.Count - 1){
-                            view.Output($"and a{_currentRoom.Contents[i].Name}.");
+                            view.Output($"and a {_currentRoom.Contents[i].Name}.");
                         }
                         else{
                             view.Output($"a {_currentRoom.Contents[i].Name}, ", false);
@@ -532,7 +532,11 @@ namespace ConsoleAdventureGame.control{
                         Monster monster = turnOrder.Dequeue();
                         view.Output($"{monster.Id}: ", false);
                         view.Output($"{monster.Health}", foreground: ConsoleColor.Red);
-                        monster.Fight(_player);
+                        
+                        view.FormattedOutput(
+                            $"The vicious &red{monster.Name} swings his &red{monster.Weapon.Name} &ylw{monster.Weapon.AttacksPerTurn} time(s). &ylw{monster.Fight(_player)} of his blows connect with you!");
+                        
+                        
                         tempQueue.Enqueue(monster);
                     }
                     //TODO: DISPLAY ENEMY COMBAT

@@ -54,7 +54,7 @@ namespace ConsoleAdventureGame.model.creatures{
         public int Fight(AbstractCreature opponent){
             int hits = 0;
             Random gen = new Random();
-            // Should not effect non-player characters. Calculate bonus value based on presence of strength or agility boost. 
+            // Should not effect non-player characters as their StrengthBoost and AgilityBoost should always be false.  
             int actualAttacksPerTurn = StrengthBoost ? Weapon.AttacksPerTurn + 1 : Weapon.AttacksPerTurn;
             int defenseScore = AgilityBoost
                 ? opponent.Armor.CalculateArmorScore() + 3
