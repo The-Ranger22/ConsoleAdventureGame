@@ -1,5 +1,7 @@
 ﻿using ConsoleAdventureGame.model.items.weapon;
-
+/*
+ * Description: This class creates the weapons by assigning them an enum 
+ */
 namespace ConsoleAdventureGame.factory{
     public class WeaponFactory{
         public static MeleeWeapon CreateSword() => new MeleeWeapon(EnMeleeWeapons.SWORD);
