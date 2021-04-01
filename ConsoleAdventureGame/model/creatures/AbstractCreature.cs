@@ -38,7 +38,11 @@ namespace ConsoleAdventureGame.model.creatures{
             Inventory.Add(Weapon);
             Inventory.Add(Armor);
         }
-
+        
+        /// <summary>
+        /// Determine if the creature is still alive
+        /// </summary>
+        /// <returns>True if the creatures health is greater than zero</returns>
         public bool IsAlive(){
             return Health > 0;
         }
