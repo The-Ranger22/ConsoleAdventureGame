@@ -50,6 +50,7 @@ namespace ConsoleAdventureGame.model.creatures{
          * At the end of the fight, Strength Boost and Agility boost are reset
          * to false, as a potion will only last one fight. 
          */
+        //TODO: Make the fight method return an int signifying how many hits successfully landed
         public void Fight(AbstractCreature opponent){
             Random gen = new Random();
             // Should not effect non-player characters. Calculate bonus value based on presence of strength or agility boost. 
@@ -57,9 +58,7 @@ namespace ConsoleAdventureGame.model.creatures{
             int defenseScore = AgilityBoost
                 ? opponent.Armor.CalculateArmorScore() + 3
                 : opponent.Armor.CalculateArmorScore();
-
             for (int i = 0; i < actualAttacksPerTurn; i++){
-                
                 if ((gen.Next(20) + 1) > defenseScore){
                     
                     //roll to hit
@@ -67,10 +66,7 @@ namespace ConsoleAdventureGame.model.creatures{
                         ? Weapon.CalculateDamage()
                         : new DamageRoll(1, 4).roll()); // if hit successful, roll damage. 
                 }
-                
             }
-
-
             // At the end of fight's recursive calls, reset players values to false, as potions only should last one fight. 
             StrengthBoost = false;
             AgilityBoost = false;

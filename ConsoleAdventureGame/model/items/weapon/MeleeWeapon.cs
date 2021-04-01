@@ -11,14 +11,14 @@ namespace ConsoleAdventureGame.model.items.weapon{
             Desc = "A sword of unremarkable make and design, forged from bronze.";
         }
 
-        public MeleeWeapon(DamageType damageType, DamageRoll damageRoll, string name, string desc, int modifier){
+        public MeleeWeapon(DamageType damageType, DamageRoll damageRoll, string name, string desc, int modifier, int attacksPerTurn){
             _damageType = damageType;
             _damageRoll = damageRoll;
             this.Name = name;
             this.Desc = desc;
             bonusDmg = modifier;
+            AttacksPerTurn = attacksPerTurn;
         }
-
         public MeleeWeapon(EnMeleeWeapons weaponType){
             switch (weaponType){
                 case EnMeleeWeapons.AXE:{

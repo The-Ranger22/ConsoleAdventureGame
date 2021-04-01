@@ -27,7 +27,7 @@ namespace ConsoleAdventureGame.model.rooms{
 
             Rooms[2].Contents.Add(new MeleeWeapon(EnMeleeWeapons.DAGGER));
             Rooms[0].Contents.Add(new MeleeWeapon(DamageType.BLUNT, new DamageRoll(3, 4), "The Mighty Mack",
-                "A four foot long mackerel ideal for bludgeoning someone to death with.", 1));
+                "A four foot long mackerel ideal for bludgeoning someone to death with.", 1, 1));
             Rooms[7].Contents.Add(new MeleeWeapon(EnMeleeWeapons.GREATSWORD));
             Rooms[2].Creatures.Add(MonsterFactory.CreateGoblin(Rooms[2]));
             Rooms[2].Creatures.Add(MonsterFactory.CreateHobgoblin(Rooms[2], CreatureState.HUNTING));

@@ -36,6 +36,7 @@ namespace ConsoleAdventureGame.control{
                 describeRoom();
                 //check if combat is going to occur w/ any creature inside the room
                 combat();
+                //TODO: Check if the player is dead
                 //prompt user w/ menu options
                 menu();
                 //after the user has taken their action, go through all the rooms and have all monsters act upon their behavior
@@ -346,6 +347,7 @@ namespace ConsoleAdventureGame.control{
                 foreach (AbstractCreature creature in room.Creatures){
                     if (creature is Monster monster){
                         turnOrder.Enqueue(monster);
+                        
                     }
                 }
             }
@@ -369,12 +371,15 @@ namespace ConsoleAdventureGame.control{
 
                 while (turnOrder.Count > 0 && _player.IsAlive()){
                     //prompt player to pick an action
+                    //TODO: Prompt player to pick an action
                     view.Output("Player: ", false);
                     view.Output($"{_player.Health}", foreground: ConsoleColor.Green);
+                    //TODO: Make the fight method return an int signifying how many hits successfully landed
                     _player.Fight(turnOrder.Peek());
 
                     if (!turnOrder.Peek().IsAlive()){
                         view.Output($"The {turnOrder.Peek().Name} is dead.");
+                        _currentRoom.Contents.AddRange(turnOrder.Peek().Inventory);
                         turnOrder.Peek().State = CreatureState.DEAD;
                         turnOrder.Dequeue(); //remove the dead from the turn order because they are dead
                     }
@@ -387,7 +392,6 @@ namespace ConsoleAdventureGame.control{
                         monster.Fight(_player);
                         tempQueue.Enqueue(monster);
                     }
-
                     turnOrder = tempQueue;
                 }
             }
