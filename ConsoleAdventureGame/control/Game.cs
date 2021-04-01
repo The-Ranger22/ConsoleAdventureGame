@@ -15,7 +15,9 @@ namespace ConsoleAdventureGame.control{
     /// Responsible for driving the game.
     /// </summary>
     public class Game{
-        static Player _player = new Player(20, new List<AbstractItem>(), ArmorFactory.CreateLeather(), WeaponFactory.CreateSword());
+        static Player _player = new Player(20, new List<AbstractItem>(), ArmorFactory.CreateLeather(),
+            WeaponFactory.CreateSword());
+
         static Dungeon _dungeon = new Dungeon();
         static Room _currentRoom = _dungeon.Rooms[0]; //player's initial spawn point
         static View view = new View();
@@ -32,14 +34,16 @@ namespace ConsoleAdventureGame.control{
                 //    - display creature(s) descriptions
                 //    - display descriptions of the contents of the room
                 describeRoom();
+                //check if combat is going to occur w/ any creature inside the room
+                combat();
                 //prompt user w/ menu options
                 menu();
                 //after the user has taken their action, go through all the rooms and have all monsters act upon their behavior
                 monstersTurn();
             }
         }
-        
-        
+
+
         private bool menu(){
             bool actionTaken = false;
 
@@ -64,7 +68,8 @@ namespace ConsoleAdventureGame.control{
                         actionTaken = inventoryMenu();
                         break;
                     }
-                    case 0:{//quit
+                    case 0:{
+                        //quit
                         return false;
                     }
                 }
@@ -145,6 +150,7 @@ namespace ConsoleAdventureGame.control{
                 for (int i = 0; i < _player.Inventory.Count; i++){
                     view.Output(String.Format(format, i + 1, _player.Inventory[i].Name));
                 }
+
                 view.Output("[0] : Return");
                 view.Output("Specify the number of the item you would like to select.");
                 int input = view.Input() - 1;
@@ -183,6 +189,7 @@ namespace ConsoleAdventureGame.control{
                                     if (_player.Weapon == item){
                                         _player.Weapon = null;
                                     }
+
                                     view.Output(String.Format("You drop {0}.", item.Name));
                                     return true;
                                 }
@@ -199,7 +206,7 @@ namespace ConsoleAdventureGame.control{
                             // Output item name and description
                             view.Output(item.Name);
                             view.Output(item.Desc);
-                            
+
                             view.Output(String.Format(format, 1, "Equip"));
                             view.Output(String.Format(format, 2, "Drop"));
                             view.Output(String.Format(format, 0, "Return"));
@@ -220,9 +227,11 @@ namespace ConsoleAdventureGame.control{
                                     if (_player.Weapon == item){
                                         _player.Weapon = null;
                                     }
+
                                     view.Output(String.Format("You drop {0}.", item.Name));
                                     return true;
-                                } default:{
+                                }
+                                default:{
                                     view.Output(String.Format("You want to do what with {0}?", item.Name));
                                     break;
                                 }
@@ -274,6 +283,7 @@ namespace ConsoleAdventureGame.control{
                 else{
                     view.Output("You're rather imaginative, aren't you?");
                 }
+
                 //Console.Clear();
             }
         }
@@ -281,6 +291,27 @@ namespace ConsoleAdventureGame.control{
         private void describeRoom(){
             view.Output("You enter the room.");
             view.Output(_currentRoom.Description);
+            //display all the items on the floor
+            if (_currentRoom.Contents.Count > 0){
+                if (_currentRoom.Contents.Count == 1){
+                    view.Output($"You see a {_currentRoom.Contents[0].Name} lying on the floor.");
+                }
+                else{
+                    view.Output("On the floor, you see ", false);
+                    for (int i = 0; i < _currentRoom.Contents.Count; i++){
+                        if (i == _currentRoom.Contents.Count - 1){
+                            view.Output($"and a{_currentRoom.Contents[i].Name}.");
+                        }
+                        else{
+                            view.Output($"a {_currentRoom.Contents[i].Name}, ", false);
+                        }
+                    }
+                }
+            }
+            else{
+                view.Output("There is nothing here.");
+            }
+
             //display all the creatures inside the room if there are any
             if (_currentRoom.Creatures.Count > 0){
                 if (_currentRoom.Creatures.Count == 1){
@@ -307,26 +338,6 @@ namespace ConsoleAdventureGame.control{
             else{
                 view.Output("There is no one here.");
             }
-            //display all the items on the floor
-            if (_currentRoom.Contents.Count > 0){
-                if (_currentRoom.Contents.Count == 1){
-                    view.Output($"You see a {_currentRoom.Contents[0].Name} lying on the floor.");
-                }
-                else{
-                    view.Output("On the floor, you see ", false);
-                    for (int i = 0; i < _currentRoom.Contents.Count; i++){
-                        if (i == _currentRoom.Contents.Count - 1){
-                            view.Output($"and a{_currentRoom.Contents[i].Name}.");
-                        }
-                        else{
-                            view.Output($"a {_currentRoom.Contents[i].Name}, ", false);
-                        }
-                    }
-                }
-            }
-            else{
-                view.Output("There is nothing here.");
-            }
         }
 
         private void monstersTurn(){
@@ -341,6 +352,44 @@ namespace ConsoleAdventureGame.control{
 
             while (turnOrder.Count > 0){
                 turnOrder.Dequeue().Act();
+            }
+        }
+
+        private void combat(){
+            //check if room is populated
+            if (_currentRoom.Creatures.Count > 0){
+                Queue<Monster> turnOrder = new Queue<Monster>();
+                //include all monsters down to tussle
+                foreach (AbstractCreature abstractCreature in _currentRoom.Creatures){
+                    if (abstractCreature is Monster monster && monster.Behavior > NpcBehavior.NEUTRAL &&
+                        monster.State != CreatureState.DEAD){
+                        turnOrder.Enqueue(monster);
+                    }
+                }
+
+                while (turnOrder.Count > 0 && _player.IsAlive()){
+                    //prompt player to pick an action
+                    view.Output("Player: ", false);
+                    view.Output($"{_player.Health}", foreground: ConsoleColor.Green);
+                    _player.Fight(turnOrder.Peek());
+
+                    if (!turnOrder.Peek().IsAlive()){
+                        view.Output($"The {turnOrder.Peek().Name} is dead.");
+                        turnOrder.Peek().State = CreatureState.DEAD;
+                        turnOrder.Dequeue(); //remove the dead from the turn order because they are dead
+                    }
+
+                    Queue<Monster> tempQueue = new Queue<Monster>();
+                    while (turnOrder.Count > 0){
+                        Monster monster = turnOrder.Dequeue();
+                        view.Output($"{monster.Id}: ", false);
+                        view.Output($"{monster.Health}", foreground: ConsoleColor.Red);
+                        monster.Fight(_player);
+                        tempQueue.Enqueue(monster);
+                    }
+
+                    turnOrder = tempQueue;
+                }
             }
         }
     }
