@@ -51,7 +51,7 @@ namespace ConsoleAdventureGame.model.creatures{
             Name = name;
         }
         /// <summary>
-        /// This method takes no parameters but increases the agression level of the monster by 1 level
+        /// This method takes no parameters but increases the aggression level of the monster by 1 level
         /// lowest agression to highest: fearful, wary, neutral, angry, & beserk
         /// </summary>
         public void IncreaseAggression(){
