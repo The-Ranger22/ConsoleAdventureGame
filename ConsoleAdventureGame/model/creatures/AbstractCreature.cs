@@ -47,14 +47,15 @@ namespace ConsoleAdventureGame.model.creatures{
             return Health > 0;
         }
 
-        /**
-         * Params: An Abstract Creature, either the Player or an NPC. 
-         * First attacks per turn and defense score are calculated based on the weapon's number of strikes + strength bonus and the Armor's Score + agility bonus respectively.
-         * As an NPC creature at this point cannot consume potions, those values will always default to the Armor and Weapons natural values during calculation.
-         * At the end of the fight, Strength Boost and Agility boost are reset
-         * to false, as a potion will only last one fight. 
-         */
-        //TODO: Make the fight method return an int signifying how many hits successfully landed
+        /// <summary>
+        /// First attacks per turn and defense score are calculated based on the weapon's number of strikes + strength bonus and the Armor's Score + agility bonus respectively.
+        /// As an NPC creature at this point cannot consume potions, those values will always default to the Armor and Weapons natural values during calculation.
+        /// At the end of the fight, Strength Boost and Agility boost are reset
+        /// to false, as a potion will only last one fight.
+        /// </summary>
+        /// <param name="opponent">The creature that will take damage in this iteration of the fight</param>
+        /// <returns>an int representing the number of successful hits</returns>
+        
         public int Fight(AbstractCreature opponent){
             int hits = 0;
             Random gen = new Random();

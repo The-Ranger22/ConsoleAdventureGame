@@ -29,7 +29,7 @@ namespace ConsoleAdventureGame.control{
         private static SoundPlayer _soundPlayer; 
 
         public void run(){
-            playBackgroundMusic();
+            //playBackgroundMusic();
             //display opening message/title
             view.FormattedOutput("&dmaAdventureGame &grnv0.2");
             view.displayTitle();
@@ -67,7 +67,7 @@ namespace ConsoleAdventureGame.control{
             }
         }
 
-        private void playBackgroundMusic(){
+        /*private void playBackgroundMusic(){
             try{
                 Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
                 _soundPlayer = new SoundPlayer(@"nahhan.wav");
@@ -77,8 +77,11 @@ namespace ConsoleAdventureGame.control{
                 Console.WriteLine(e);
             }
             
-        }
+        }*/
 
+        /// <summary>
+        /// Produces the main interaction menu upon the player entering a room. 
+        /// </summary>
         private void menu(){
             bool actionTaken = false;
 
@@ -118,6 +121,10 @@ namespace ConsoleAdventureGame.control{
             }
         }
 
+        /// <summary>
+        /// Generates and handles input for inspecting the room. Contents of the room are listed, if present, and the user may pick up items provided they have space in their inventory. 
+        /// </summary>
+        /// <returns>True if the player successfully picks up an item. </returns>
         private bool inspectMenu(){
             if (_currentRoom.Contents.Count < 1){
                 view.FormattedOutput("There is nothing to pick up.");
@@ -139,14 +146,14 @@ namespace ConsoleAdventureGame.control{
                     }
 
                     if (input >= 0 && input < _currentRoom.Contents.Count){
-                        if (_player.PickUp(_currentRoom.Contents[input])){
+                        if (_player.PickUp(_currentRoom.Contents[input])){  //returns true if player has inventory space
                             view.FormattedOutput($"You picked up &blu{_currentRoom.Contents[input].Name}");
                             _currentRoom.Contents.RemoveAt(input);
                             return true;
                         }
 
                         view.FormattedOutput(
-                            "You've &dylcarrying to much! You'll need to part ways with something you hoarder.");
+                            "You've &dylcarrying to much! You'll need to part ways with something you hoarder."); //insult the player
                         isInspecting = false;
                     }
                     else{
@@ -158,7 +165,10 @@ namespace ConsoleAdventureGame.control{
 
             return false;
         }
-
+        /// <summary>
+        /// Generates a menu that allows the player to move into rooms that are adjacent to their current room. 
+        /// </summary>
+        /// <returns>True if the player makes a legal choice.</returns>
         private bool moveMenu(){
             while (true){
                 view.FormattedOutput("Where would you like to go?");
@@ -185,19 +195,23 @@ namespace ConsoleAdventureGame.control{
                 Console.Clear();
             }
         }
-
+        /// <summary>
+        /// Generates a menu for the player to manage their inventory. Submenus are generated based on what type of item is selected (i.e. wieldable, equippable, consumable) as
+        /// different options are available to each. For example, a player can wield or drop a weapon, or use/drop a potion.
+        /// </summary>
+        /// <returns>True if the player performs a valid action with an item </returns>
         private bool inventoryMenu(){
             while (true){
                 view.FormattedOutput("Manage your inventory.");
                 string format = "[{0}] : {1}";
                 for (int i = 0; i < _player.Inventory.Count; i++){
-                    view.FormattedOutput(String.Format(format, i + 1, _player.Inventory[i].Name));
+                    view.FormattedOutput(String.Format(format, i + 1, _player.Inventory[i].Name)); //list the inventory to the player with the corresponding selection number
                 }
 
                 view.FormattedOutput("[0] : Return");
                 view.FormattedOutput("Specify the number of the item you would like to select.");
-                int input = view.Input() - 1;
-                if (input == -1){
+                int input = view.Input() - 1; //Since we present the inventory starting at 1, we need to subtract one to access the inventory at the correct index
+                if (input == -1){ // if the user enters 0, back out of the menu. 
                     return false;
                 }
 
@@ -235,7 +249,7 @@ namespace ConsoleAdventureGame.control{
                                     return true;
                                 }
                                 default:{
-                                    view.FormattedOutput($"You want to do what with &blu{item.Name}?");
+                                    view.FormattedOutput($"You want to do what with &blu{item.Name}?"); //tell the player they entered an invalid command in a passive aggressive fashion
                                     break;
                                 }
                             }
@@ -262,7 +276,7 @@ namespace ConsoleAdventureGame.control{
                                     return true;
                                 }
                                 case 2:{
-                                    _currentRoom.Contents.Add(_player.DropItem(_player.Inventory.IndexOf(item)));
+                                    _currentRoom.Contents.Add(_player.DropItem(_player.Inventory.IndexOf(item))); // remove the dropped item from the players inventory and add it to the room's contents
                                     //if the item dropped is the weapon the player is currently holding, set the player's current weapon to null
                                     if (_player.Weapon == item){
                                         _player.Weapon = null;
@@ -325,6 +339,11 @@ namespace ConsoleAdventureGame.control{
             }
         }
 
+        /// <summary>
+        /// Combat menu allows the user to take action in between turns. Our combat system is slightly more turned-based than the prompt suggested, in that the player can
+        /// engage with multiple enemies and escape if things are looking dire. 
+        /// </summary>
+        /// <returns></returns>
         private bool combatMenu(){
             if (_currentRoom.Creatures.Count > 0 && _currentRoom.ContainsAliveCreatures()){
                 bool actionTaken = false;
@@ -352,8 +371,8 @@ namespace ConsoleAdventureGame.control{
 
                                 if (random.Next() % 2 == 0){
                                     //50% chance to escape
-                                    inCombat = false;
                                     moveMenu();
+                                    return false;
                                 }
                             }
 
@@ -532,7 +551,9 @@ namespace ConsoleAdventureGame.control{
                     //TODO: Prompt player to pick a combat action
                     inCombat =
                         combatMenu(); //depending on the action taken by the player inside the combat menu, they may remain in combat or escape it (true if they remain, false if they escape)
-
+                    if (inCombat == false){
+                        return false;
+                    }
                     view.FormattedOutput($"Player: &grn{_player.Health}");
 
                     if (!turnOrder.Peek().IsAlive()){
