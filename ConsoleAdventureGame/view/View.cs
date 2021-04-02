@@ -11,6 +11,9 @@ using System.Threading;
 
 namespace ConsoleAdventureGame.view{
     public class View{
+        /*
+         * The following constants are string codes used to color the output of strings prefixed with one of the codes listed below 
+         */
         private const string CC_BLUE = "&blu";
         private const string CC_RED = "&red";
         private const string CC_CYAN = "&cyn";
@@ -79,11 +82,10 @@ namespace ConsoleAdventureGame.view{
             if (message != null){
                 string[] messages = message.Split(' ');
                 foreach (string msg in messages){
-                    if ((!msg.Equals("")) && msg[0] == '&'){
-                        //check for ignorable characters
+                    if ((!msg.Equals("")) && msg[0] == '&'){ //if the current message isn't null and the first character is an '&', output the message w/ color
                         Output(msg.Substring(4), false, determineColor(msg));
                     }
-                    else{
+                    else{ //else display normally
                         Output(msg, false);
                     }
                     //if last message in messages, end with newline. Otherwise, output a space
@@ -98,18 +100,14 @@ namespace ConsoleAdventureGame.view{
                 }
             }
         }
-        
+        //Displays ADVENTURE in IBM437 block characters. Why yes, I do hate myself. - Levi
         public void displayTitle(){
             /*
-             * How the pattern works:
-             * -1 : blank space
-             * 0 : block
+             * the int arrays rowXpattern (X = 0->5) are used to detail the output pattern for the "Adventure" title.
              */
-
-
-            char block = IBM437Symbol.getChar(IBM437Symbol.BLOCK.FULL);
+            char block = IBM437Symbol.getChar(IBM437Symbol.BLOCK.FULL); //get the full block character
             int[,] displayPattern = new int[6, 45];
-            int[] row0pattern = {2, 3, 4};
+            int[] row0pattern = {2, 3, 4}; 
             int[] row1pattern = {1, 2, 3, 4, 5, 9, 11, 13, 16, 17, 20, 23, 25, 26, 27, 29, 31, 33, 34, 35, 36, 39, 40};
             int[] row2pattern = {1, 5, 9, 11, 13, 15, 18, 20, 21, 23, 26, 29, 31, 33, 36, 38, 41};
             int[] row3pattern =
@@ -201,25 +199,25 @@ namespace ConsoleAdventureGame.view{
                 Console.WriteLine();
             }
         }
-
+        //given a color code string (I.e. a string beginning with one of the CC_XXX constants), this function returns the appropriate ConsoleColor equivalent
         private ConsoleColor determineColor(string msg){
             /*
              * Colors are denoted by &xxx in a string
              * Color codes:
-             * Blue        => &blu
-             * Red         => &red
-             * Cyan        => &cyn
-             * Gray        => &gry
-             * Green       => &grn
-             * Magenta     => &mag
-             * Yellow      => &ylw
-             * DarkBlue    => &dbl
-             * DarkRed     => &drd
-             * DarkCyan    => &dcy
-             * DarkGray    => &dgy
-             * DarkGreen   => &dgn
-             * DarkMagenta => &dma
-             * DarkYellow  => &dyl
+             * Blue        => &blu => CC_BLUE
+             * Red         => &red => CC_RED
+             * Cyan        => &cyn => CC_CYAN
+             * Gray        => &gry => CC_GRAY
+             * Green       => &grn => CC_GREEN
+             * Magenta     => &mag => CC_MAGENTA
+             * Yellow      => &ylw => CC_YELLOW
+             * DarkBlue    => &dbl => CC_DARK_BLUE
+             * DarkRed     => &drd => CC_DARK_RED
+             * DarkCyan    => &dcy => CC_DARK_CYAN
+             * DarkGray    => &dgy => CC_DARK_GRAY
+             * DarkGreen   => &dgn => CC_DARK_GREEN
+             * DarkMagenta => &dma => CC_DARK_MAGENTA
+             * DarkYellow  => &dyl => CC_DARK_YELLOW
              */
             ConsoleColor displayColor;
             switch (msg.Substring(0, 4)){
@@ -284,7 +282,6 @@ namespace ConsoleAdventureGame.view{
                     break;
                 }
             }
-
             return displayColor;
         }
 
