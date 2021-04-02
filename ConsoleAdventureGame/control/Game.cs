@@ -1,6 +1,8 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Media;
 using System.Reflection;
 using System.Text;
 using ConsoleAdventureGame.factory;
@@ -24,8 +26,10 @@ namespace ConsoleAdventureGame.control{
         private static bool gameIsRunning = true;
         private static bool inCombat = false;
         private static GameState _gameState = GameState.RUNNING;
+        private static SoundPlayer _soundPlayer; 
 
         public void run(){
+            playBackgroundMusic();
             //display opening message/title
             view.FormattedOutput("&dmaAdventureGame &grnv0.2");
             view.displayTitle();
@@ -63,6 +67,16 @@ namespace ConsoleAdventureGame.control{
             }
         }
 
+        private void playBackgroundMusic(){
+            try{
+                _soundPlayer = new SoundPlayer(@"nahhan.wav");
+                _soundPlayer.PlayLooping();
+            }
+            catch (FileNotFoundException e){
+                Console.WriteLine(e);
+            }
+            
+        }
 
         private void menu(){
             bool actionTaken = false;
@@ -116,7 +130,8 @@ namespace ConsoleAdventureGame.control{
                         view.FormattedOutput($"[{++count}] : {item.Name}");
                     }
 
-                    view.FormattedOutput("Specify the number of the item you would like to pick up or enter 0 to return: ");
+                    view.FormattedOutput(
+                        "Specify the number of the item you would like to pick up or enter 0 to return: ");
                     input = view.Input() - 1; //adjust user input to compensate for index offset
                     if (input == -1){
                         return false;
@@ -129,7 +144,8 @@ namespace ConsoleAdventureGame.control{
                             return true;
                         }
 
-                        view.FormattedOutput("You've &dylcarrying to much! You'll need to part ways with something you hoarder.");
+                        view.FormattedOutput(
+                            "You've &dylcarrying to much! You'll need to part ways with something you hoarder.");
                         isInspecting = false;
                     }
                     else{
@@ -305,7 +321,6 @@ namespace ConsoleAdventureGame.control{
                 else{
                     view.FormattedOutput("You're rather imaginative, aren't you?");
                 }
-                
             }
         }
 
@@ -423,7 +438,7 @@ namespace ConsoleAdventureGame.control{
                 else{
                     StringBuilder outputString = new StringBuilder();
                     outputString.Append("On the floor, you see ");
-                    
+
                     for (int i = 0; i < _currentRoom.Contents.Count; i++){
                         if (i == _currentRoom.Contents.Count - 1){
                             outputString.Append($"and a &blu{_currentRoom.Contents[i].Name}.");
@@ -432,6 +447,7 @@ namespace ConsoleAdventureGame.control{
                             outputString.Append($"a &blu{_currentRoom.Contents[i].Name}, ");
                         }
                     }
+
                     view.FormattedOutput(outputString.ToString());
                 }
             }
@@ -453,24 +469,23 @@ namespace ConsoleAdventureGame.control{
                 else{
                     StringBuilder outputString = new StringBuilder();
                     outputString.Append("You see a ");
-                    
+
                     foreach (AbstractCreature creature in _currentRoom.Creatures){
                         if (creature is Monster monster){
-                            
                             outputString.Append(
                                 $"{(monster.IsAlive() ? $"&mag{monster.Behavior.ToString().ToLower()}" : $"&dgy{monster.State.ToString().ToLower()}")} &red{monster.Name}");
-                            if (creature == _currentRoom.Creatures[_currentRoom.Creatures.Count - 2]){ //if the current creature is the second to last creature, append 'and a '
+                            if (creature == _currentRoom.Creatures[_currentRoom.Creatures.Count - 2]){
+                                //if the current creature is the second to last creature, append 'and a '
                                 outputString.Append(" and a ");
                             }
-                            else if(creature != _currentRoom.Creatures[_currentRoom.Creatures.Count - 1]){ //if the current creature is not the last creature, append a comma
+                            else if (creature != _currentRoom.Creatures[_currentRoom.Creatures.Count - 1]){
+                                //if the current creature is not the last creature, append a comma
                                 outputString.Append(", ");
                             }
                         }
                     }
-                    
+
                     view.FormattedOutput(outputString.ToString());
-                    
-                    
                 }
             }
             else{
@@ -510,12 +525,13 @@ namespace ConsoleAdventureGame.control{
                         turnOrder.Enqueue(monster);
                     }
                 }
+
                 while (turnOrder.Count > 0 && _player.IsAlive()){
                     //prompt player to pick an action
                     //TODO: Prompt player to pick a combat action
                     inCombat =
                         combatMenu(); //depending on the action taken by the player inside the combat menu, they may remain in combat or escape it (true if they remain, false if they escape)
-                    
+
                     view.FormattedOutput($"Player: &grn{_player.Health}");
 
                     if (!turnOrder.Peek().IsAlive()){
@@ -530,6 +546,7 @@ namespace ConsoleAdventureGame.control{
                             $"The vicious &red{monster.Name} swings his &red{monster.Weapon.Name} &ylw{monster.Weapon.AttacksPerTurn} time(s). &ylw{monster.Fight(_player)} of his blows connect with you!");
                         tempQueue.Enqueue(monster);
                     }
+
                     //TODO: DISPLAY ENEMY COMBAT
                     turnOrder = tempQueue;
                     //TODO: Check for monsters that were not initially aggressive and add them to the queue
