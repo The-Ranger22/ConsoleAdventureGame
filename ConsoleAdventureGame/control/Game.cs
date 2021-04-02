@@ -29,7 +29,7 @@ namespace ConsoleAdventureGame.control{
         private static SoundPlayer _soundPlayer; 
 
         public void run(){
-            //playBackgroundMusic();
+            playBackgroundMusic();
             //display opening message/title
             view.FormattedOutput("&dmaAdventureGame &grnv0.2");
             view.displayTitle();
@@ -71,7 +71,7 @@ namespace ConsoleAdventureGame.control{
             }
         }
 
-        /*private void playBackgroundMusic(){
+        private void playBackgroundMusic(){
             try{
                 Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
                 _soundPlayer = new SoundPlayer(@"nahhan.wav");
@@ -81,7 +81,7 @@ namespace ConsoleAdventureGame.control{
                 Console.WriteLine(e);
             }
             
-        }*/
+        }
 
         /// <summary>
         /// Produces the main interaction menu upon the player entering a room. 
