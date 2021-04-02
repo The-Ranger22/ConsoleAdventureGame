@@ -371,8 +371,14 @@ namespace ConsoleAdventureGame.control{
 
                                 if (random.Next() % 2 == 0){
                                     //50% chance to escape
-                                    moveMenu();
-                                    return false;
+                                    if (moveMenu()){
+                                        return false;
+                                    }
+                                    
+                                }
+                                else{
+                                    view.FormattedOutput("You try to get away, but the effort is wasted!");
+                                    actionTaken = true;
                                 }
                             }
 
@@ -380,6 +386,8 @@ namespace ConsoleAdventureGame.control{
                         }
                     }
                 }
+
+                return true;
             }
             else{
                 view.FormattedOutput("There is no one to fight!");
@@ -555,9 +563,9 @@ namespace ConsoleAdventureGame.control{
                         return false;
                     }
                     view.FormattedOutput($"Player: &grn{_player.Health}");
-
+                    
                     if (!turnOrder.Peek().IsAlive()){
-                        view.FormattedOutput($"The &red{turnOrder.Peek().Name} is dead.");
+                        view.FormattedOutput($"The &red{turnOrder.Peek().Name} is &dgydead.");
                         turnOrder.Dequeue(); //remove the dead from the turn order because they are dead
                     }
 
