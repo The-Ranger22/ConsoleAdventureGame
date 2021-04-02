@@ -69,6 +69,7 @@ namespace ConsoleAdventureGame.control{
 
         private void playBackgroundMusic(){
             try{
+                Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
                 _soundPlayer = new SoundPlayer(@"nahhan.wav");
                 _soundPlayer.PlayLooping();
             }
