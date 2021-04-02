@@ -50,6 +50,9 @@ namespace ConsoleAdventureGame.control{
                     monstersTurn();
                 }
 
+                if (!_player.IsAlive()){
+                    _gameState = GameState.DEFEAT;
+                }
 
                 if (_gameState != GameState.RUNNING){
                     gameIsRunning = false;
@@ -59,6 +62,7 @@ namespace ConsoleAdventureGame.control{
             switch (_gameState){
                 case GameState.DEFEAT:{
                     view.FormattedOutput("&magDefeat! The &redgoblin &redhordes have bested you!");
+                    Console.ReadLine();
                     break;
                 }
                 case GameState.VICTORY:{
